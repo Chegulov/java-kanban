@@ -90,12 +90,14 @@ public class TaskManager {
 
     public void updateTask(int id, Task task) {
         if (taskMap.containsKey(id)) {
+            task.setId(id);
             taskMap.put(id, task);
         }
     }
 
     public void updateSubTask(int id, SubTask subTask) {
         if (subTaskMap.containsKey(id)) {
+            subTask.setId(id);
             int parentTaskId = subTaskMap.get(id).getParentTaskId();
             epicTaskMap.get(parentTaskId).removeSubTask(id);
             subTaskMap.put(id, subTask);
@@ -107,6 +109,7 @@ public class TaskManager {
     public void updateEpicTask(int id, Epic epic) {
         if (epicTaskMap.containsKey(id)) {
             HashMap<Integer, SubTask> oldSubTaskMap = epicTaskMap.get(id).getSubTaskMap();
+            epic.setId(id);
             epic.setSubTaskMap(oldSubTaskMap);
             epicTaskMap.put(id, epic);
         }

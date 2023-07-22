@@ -18,4 +18,10 @@ public class SubTask extends Task {
     public void setParentTaskId(int parentTaskId) {
         this.parentTaskId = parentTaskId;
     }
+
+    @Override
+    public String toString() {
+        return "SubTask{id=" + id + ", name=" + name + ", description.length="
+                + description.length() + ", Status=" + status + ", parentTaskId=" + parentTaskId + "}";
+    }
 }

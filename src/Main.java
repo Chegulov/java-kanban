@@ -36,15 +36,23 @@ public class Main {
         System.out.println();
 
         //обновил задачи
-        taskManager.updateTask(6, new Task("таск1 новый", "1'"));
-        taskManager.updateSubTask(5, new SubTask("саб2 новый", "200'", 1));
+        taskManager.updateTask(6, new Task("таск1 новый", "1'", Status.DONE));
+        taskManager.updateSubTask(5, new SubTask("саб2 новый", "200'", Status.DONE, 1));
         taskManager.updateEpicTask(3, new Epic("эпик2 новый", "222'"));
+        taskManager.updateSubTask(4, new SubTask("саб3 новый", "300'", Status.DONE, 3));
 
         System.out.println(taskManager.getEpicTaskById(1));
-        System.out.println(taskManager.getSubTaskById(2));
-        System.out.println(taskManager.getTaskById(7));
+        System.out.println(taskManager.getSubTaskById(5));
+        System.out.println(taskManager.getTaskById(6));
         System.out.println(taskManager.getSubTaskMapByEpic(1));
         System.out.println();
+        System.out.println(taskManager.getTaskById(6).getStatus());
+        System.out.println(taskManager.getSubTaskById(5).getStatus());
+        System.out.println(taskManager.getEpicTaskById(1).getStatus());
+        System.out.println("<<<<<<<<<<<<<");
+        System.out.println(taskManager.getEpicTaskById(3).getStatus());
+        System.out.println(taskManager.getSubTaskMapByEpic(3));
+        System.out.println(">>>>>>>>>>>>>");
 
         System.out.println(taskManager.getEpicTaskById(3));
         System.out.println(taskManager.getSubTaskById(4));

@@ -4,10 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Поехали!");
 
+        //добавляю новые таски
         taskManager.newEpicTask(new Epic("эпик1", "111")); // добавлен эпик id1
         taskManager.newSubTask(new SubTask("саб1", "100", 1)); // добавлен сабтаск id2
         taskManager.newEpicTask(new Epic("эпик2", "222")); // добавлен эпик id3
@@ -61,11 +61,11 @@ public class Main {
         System.out.println();
 
         //удаление
-        /*taskManager.removeSubTask(5);
+        taskManager.removeSubTask(5);
         taskManager.removeSubTask(4);
         taskManager.removeTask(8);
-        taskManager.removeEpicTask(1);*/
-        //taskManager.clearSubTaskMap();
+        taskManager.removeEpicTask(1);
+        taskManager.clearSubTaskMap();
         taskManager.clearTaskMap();
         taskManager.clearEpicTaskMap();
 

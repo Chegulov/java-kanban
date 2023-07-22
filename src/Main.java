@@ -18,17 +18,17 @@ public class Main {
         taskManager.newTask(new Task("таск1", "1"));
         taskManager.newTask(new Task("таск2", "2"));
 
-        System.out.println(taskManager.epicTaskMap);
-        System.out.println(taskManager.subTaskMap);
-        System.out.println(taskManager.taskMap);
+        System.out.println(taskManager.getEpicTaskMap());
+        System.out.println(taskManager.getSubTaskMap());
+        System.out.println(taskManager.getTaskMap());
 
-        System.out.println(taskManager.epicTaskMap.get(1));
-        System.out.println(taskManager.subTaskMap.get(2));
-        System.out.println(taskManager.epicTaskMap.get(1).getSubTaskMap());
+        System.out.println(taskManager.getEpicTaskMap().get(1));
+        System.out.println(taskManager.getSubTaskMap().get(2));
+        System.out.println(taskManager.getEpicTaskMap().get(1).getSubTaskMap());
 
-        System.out.println(taskManager.epicTaskMap.get(3));
-        System.out.println(taskManager.subTaskMap.get(4));
-        System.out.println(taskManager.subTaskMap.get(5));
-        System.out.println(taskManager.epicTaskMap.get(3).getSubTaskMap());
+        System.out.println(taskManager.getEpicTaskMap().get(3));
+        System.out.println(taskManager.getSubTaskMap().get(4));
+        System.out.println(taskManager.getSubTaskMap().get(5));
+        System.out.println(taskManager.getEpicTaskMap().get(3).getSubTaskMap());
     }
 }

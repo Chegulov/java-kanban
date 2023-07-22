@@ -2,9 +2,15 @@ import java.util.HashMap;
 
 public class TaskManager {
     private int id = 0;
-    private HashMap<Integer, Task> taskMap = new HashMap<>();
-    private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
-    private HashMap<Integer, Epic> epicTaskMap = new HashMap<>();
+    private HashMap<Integer, Task> taskMap;
+    private HashMap<Integer, SubTask> subTaskMap;
+    private HashMap<Integer, Epic> epicTaskMap;
+
+    public TaskManager() {
+        taskMap = new HashMap<>();
+        subTaskMap = new HashMap<>();
+        epicTaskMap = new HashMap<>();
+    }
 
     public HashMap<Integer, Task> getTaskMap() {
         return taskMap;
@@ -38,7 +44,7 @@ public class TaskManager {
     public void newSubTask(SubTask subTask) {
         subTaskMap.put(++id, subTask);
         subTask.setId(id);
-        epicTaskMap.get(subTask.getParentTaskId()).getSubTaskMap().put(id, subTask);
+        epicTaskMap.get(subTask.getParentTaskId()).addSubTask(id, subTask);
     }
 
     public void newTask(Task task) {
@@ -80,5 +86,55 @@ public class TaskManager {
 
     public SubTask getSubTaskById(int id) {
         return subTaskMap.get(id);
+    }
+
+    public void updateTask(int id, Task task) {
+        if (taskMap.containsKey(id)) {
+            taskMap.put(id, task);
+        }
+    }
+
+    public void updateSubTask(int id, SubTask subTask) {
+        if (subTaskMap.containsKey(id)) {
+            int parentTaskId = subTaskMap.get(id).getParentTaskId();
+            epicTaskMap.get(parentTaskId).removeSubTask(id);
+            subTaskMap.put(id, subTask);
+            parentTaskId = subTask.getParentTaskId();
+            epicTaskMap.get(parentTaskId).addSubTask(id, subTask);
+        }
+    }
+
+    public void updateEpicTask(int id, Epic epic) {
+        if (epicTaskMap.containsKey(id)) {
+            HashMap<Integer, SubTask> oldSubTaskMap = epicTaskMap.get(id).getSubTaskMap();
+            epic.setSubTaskMap(oldSubTaskMap);
+            epicTaskMap.put(id, epic);
+        }
+    }
+
+    public void removeTask(int id) {
+        taskMap.remove(id);
+    }
+
+    public void removeSubTask(int id) {
+        if (subTaskMap.containsKey(id)) {
+            int parentTaskId = subTaskMap.get(id).getParentTaskId();
+            epicTaskMap.get(parentTaskId).removeSubTask(id);
+            subTaskMap.remove(id);
+        }
+    }
+
+    public void removeEpicTask(int id) {
+        for (int subTaskKey : epicTaskMap.get(id).getSubTaskMap().keySet()) {
+            subTaskMap.remove(subTaskKey);
+        }
+        epicTaskMap.remove(id);
+    }
+
+    public HashMap<Integer, SubTask> getSubTaskMapByEpic (int id) {
+        if (epicTaskMap.containsKey(id)) {
+            return epicTaskMap.get(id).getSubTaskMap();
+        }
+        return null;
     }
 }

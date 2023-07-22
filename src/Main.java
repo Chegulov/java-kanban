@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -75,6 +73,5 @@ public class Main {
         System.out.println(taskManager.getSubTaskMapByEpic(3));
         System.out.println(taskManager.getEpicTaskById(1));
 
-        System.out.println("--------------");
     }
 }

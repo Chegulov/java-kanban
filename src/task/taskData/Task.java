@@ -1,3 +1,5 @@
+package task.taskData;
+
 public class Task {
     protected String name;
     protected String description;
@@ -49,7 +51,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{id=" + id + ", name=" + name + ", description.length="
-                + description.length() + ", Status=" + status + "}";
+        return "task.taskdata.Task{id=" + id + ", name=" + name + ", description.length="
+                + description.length() + ", task.taskdata.Status=" + status + "}";
     }
 }

@@ -1,5 +1,7 @@
+package task.taskData;
+
 public class SubTask extends Task {
-    protected int parentTaskId;
+    private int parentTaskId;
 
     public SubTask(String name, String description, int parentTaskId) {
         super(name, description);
@@ -21,7 +23,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{id=" + id + ", name=" + name + ", description.length="
-                + description.length() + ", Status=" + status + ", parentTaskId=" + parentTaskId + "}";
+        return "task.taskdata.SubTask{id=" + id + ", name=" + name + ", description.length="
+                + description.length() + ", task.taskdata.Status=" + status + ", parentTaskId=" + parentTaskId + "}";
     }
 }

@@ -1,5 +1,7 @@
-import java.util.HashMap;
+package task;
 
+import java.util.HashMap;
+import task.taskData.*;
 public class TaskManager {
     private int id = 0;
     private HashMap<Integer, Task> taskMap;
@@ -71,7 +73,7 @@ public class TaskManager {
         // при удалении сабтаски, удалить её из связанного эпика.
         for (SubTask subTask : subTaskMap.values()) {
             int id = subTask.getParentTaskId();
-            epicTaskMap.get(id).subTaskMap.remove(subTask.getId());
+            epicTaskMap.get(id).getSubTaskMap().remove(subTask.getId());
         }
         subTaskMap.clear();
     }
@@ -134,10 +136,10 @@ public class TaskManager {
         epicTaskMap.remove(id);
     }
 
-    public HashMap<Integer, SubTask> getSubTaskMapByEpic (int id) {
+    public HashMap<Integer, SubTask> getSubTaskMapByEpic(int id) {
         if (epicTaskMap.containsKey(id)) {
             return epicTaskMap.get(id).getSubTaskMap();
         }
-        return null;
+        return new HashMap<>();
     }
 }

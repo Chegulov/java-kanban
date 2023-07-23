@@ -51,7 +51,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "task.taskdata.Task{id=" + id + ", name=" + name + ", description.length="
-                + description.length() + ", task.taskdata.Status=" + status + "}";
+        return "task.taskData.Task{id=" + id + ", name=" + name + ", description.length="
+                + description.length() + ", status=" + status + "}";
     }
 }

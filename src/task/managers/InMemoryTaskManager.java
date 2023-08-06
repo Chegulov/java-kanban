@@ -1,6 +1,5 @@
 package task.managers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +10,14 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Task> taskMap;
     private Map<Integer, SubTask> subTaskMap;
     private Map<Integer, Epic> epicTaskMap;
-    private final List<Task> historyList;
+
+    private final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         taskMap = new HashMap<>();
         subTaskMap = new HashMap<>();
         epicTaskMap = new HashMap<>();
-        historyList = new ArrayList<>();
+        historyManager = Managers.getDefaultHistory();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         if (taskMap.containsKey(id)) {
-            addInHistory(taskMap.get(id));
+            historyManager.add(taskMap.get(id));
             return taskMap.get(id);
         } else return null;
     }
@@ -107,7 +107,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpicTaskById(int id) {
         if (epicTaskMap.containsKey(id)) {
-            addInHistory(epicTaskMap.get(id));
+            historyManager.add(epicTaskMap.get(id));
             return epicTaskMap.get(id);
         } else return null;
     }
@@ -115,7 +115,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask getSubTaskById(int id) {
         if (subTaskMap.containsKey(id)) {
-            addInHistory(subTaskMap.get(id));
+            historyManager.add(subTaskMap.get(id));
             return subTaskMap.get(id);
         } else return null;
     }
@@ -182,13 +182,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return historyList;
-    }
-
-    private void addInHistory(Task task) {
-        if (historyList.size() >= 10) {
-            historyList.remove(0);
-        }
-        historyList.add(task);
+        return historyManager.getHistory();
     }
 }

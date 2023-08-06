@@ -23,7 +23,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "task.taskData.SubTask{id=" + id + ", name=" + name + ", description.length="
+        return "SubTask{id=" + id + ", name=" + name + ", description.length="
                 + description.length() + ", status=" + status + ", parentTaskId=" + parentTaskId + "}";
     }
 }

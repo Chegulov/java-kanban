@@ -50,7 +50,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "task.taskData.Epic{id=" + id + ", name=" + name + ", description.length=" +
+        return "Epic{id=" + id + ", name=" + name + ", description.length=" +
                 description.length() + ", status=" + status + ", subTaskMap = " + subTaskMap + "}";
     }
 }

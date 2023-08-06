@@ -1,15 +1,16 @@
-package task;
+package task.managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import task.taskData.*;
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
-    private HashMap<Integer, Task> taskMap;
-    private HashMap<Integer, SubTask> subTaskMap;
-    private HashMap<Integer, Epic> epicTaskMap;
+    private Map<Integer, Task> taskMap;
+    private Map<Integer, SubTask> subTaskMap;
+    private Map<Integer, Epic> epicTaskMap;
     private final List<Task> historyList;
 
     public InMemoryTaskManager() {
@@ -20,7 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, Task> getTaskMap() {
+    public Map<Integer, Task> getTaskMap() {
         return taskMap;
     }
 
@@ -30,7 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, SubTask> getSubTaskMap() {
+    public Map<Integer, SubTask> getSubTaskMap() {
         return subTaskMap;
     }
 
@@ -40,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HashMap<Integer, Epic> getEpicTaskMap() {
+    public Map<Integer, Epic> getEpicTaskMap() {
         return epicTaskMap;
     }
 

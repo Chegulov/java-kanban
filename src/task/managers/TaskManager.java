@@ -1,4 +1,4 @@
-package task;
+package task.managers;
 
 import task.taskData.Epic;
 import task.taskData.SubTask;
@@ -6,18 +6,19 @@ import task.taskData.Task;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
 
-    HashMap<Integer, Task> getTaskMap();
+    Map<Integer, Task> getTaskMap();
 
     void setTaskMap(HashMap<Integer, Task> taskMap);
 
-    HashMap<Integer, SubTask> getSubTaskMap();
+    Map<Integer, SubTask> getSubTaskMap();
 
     void setSubTaskMap(HashMap<Integer, SubTask> subTaskMap);
 
-    HashMap<Integer, Epic> getEpicTaskMap();
+    Map<Integer, Epic> getEpicTaskMap();
 
     void setEpicTaskMap(HashMap<Integer, Epic> epicTaskMap);
 

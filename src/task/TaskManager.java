@@ -5,6 +5,7 @@ import task.taskData.SubTask;
 import task.taskData.Task;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -51,4 +52,6 @@ public interface TaskManager {
     void removeEpicTask(int id);
 
     HashMap<Integer, SubTask> getSubTaskMapByEpic(int id);
+
+    List<Task> getHistory();
 }

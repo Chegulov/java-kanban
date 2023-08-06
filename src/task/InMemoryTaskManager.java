@@ -1,17 +1,22 @@
 package task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import task.taskData.*;
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
     private HashMap<Integer, Task> taskMap;
     private HashMap<Integer, SubTask> subTaskMap;
     private HashMap<Integer, Epic> epicTaskMap;
+    private final List<Task> historyList;
 
     public InMemoryTaskManager() {
         taskMap = new HashMap<>();
         subTaskMap = new HashMap<>();
         epicTaskMap = new HashMap<>();
+        historyList = new ArrayList<>();
     }
 
     @Override
@@ -92,17 +97,26 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        return taskMap.get(id);
+        if (taskMap.containsKey(id)) {
+            addInHistory(taskMap.get(id));
+            return taskMap.get(id);
+        } else return null;
     }
 
     @Override
     public Epic getEpicTaskById(int id) {
-        return epicTaskMap.get(id);
+        if (epicTaskMap.containsKey(id)) {
+            addInHistory(epicTaskMap.get(id));
+            return epicTaskMap.get(id);
+        } else return null;
     }
 
     @Override
     public SubTask getSubTaskById(int id) {
-        return subTaskMap.get(id);
+        if (subTaskMap.containsKey(id)) {
+            addInHistory(subTaskMap.get(id));
+            return subTaskMap.get(id);
+        } else return null;
     }
 
     @Override
@@ -163,5 +177,17 @@ public class InMemoryTaskManager implements TaskManager {
             return epicTaskMap.get(id).getSubTaskMap();
         }
         return new HashMap<>();
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyList;
+    }
+
+    private void addInHistory(Task task) {
+        if (historyList.size() >= 10) {
+            historyList.remove(0);
+        }
+        historyList.add(task);
     }
 }

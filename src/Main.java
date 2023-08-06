@@ -22,12 +22,16 @@ public class Main {
         System.out.println(inMemoryTaskManager.getSubTaskMap());
         System.out.println(inMemoryTaskManager.getTaskMap());
         System.out.println();
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println();
 
         //получение по id
         System.out.println(inMemoryTaskManager.getEpicTaskById(1));
         System.out.println(inMemoryTaskManager.getSubTaskById(2));
         System.out.println(inMemoryTaskManager.getTaskById(7));
         System.out.println(inMemoryTaskManager.getSubTaskMapByEpic(1));
+        System.out.println();
+        System.out.println(inMemoryTaskManager.getHistory());
         System.out.println();
 
         System.out.println(inMemoryTaskManager.getEpicTaskById(3));
@@ -54,11 +58,15 @@ public class Main {
         System.out.println(inMemoryTaskManager.getEpicTaskById(3).getStatus());
         System.out.println(inMemoryTaskManager.getSubTaskMapByEpic(3));
         System.out.println(">>>>>>>>>>>>>");
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println();
 
         System.out.println(inMemoryTaskManager.getEpicTaskById(3));
         System.out.println(inMemoryTaskManager.getSubTaskById(4));
         System.out.println(inMemoryTaskManager.getSubTaskById(5));
         System.out.println(inMemoryTaskManager.getSubTaskMapByEpic(3));
+        System.out.println();
+        System.out.println(inMemoryTaskManager.getHistory());
         System.out.println();
 
         //удаление

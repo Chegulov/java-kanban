@@ -1,40 +1,41 @@
 package task.taskData;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Epic extends Task {
 
-    private HashMap<Integer, SubTask> subTaskMap;
+    private Map<Integer, SubTask> subTasks;
 
 
     public Epic(String name, String description) {
         super(name, description);
-        subTaskMap = new HashMap<>();
+        subTasks = new HashMap<>();
     }
 
-    public HashMap<Integer, SubTask> getSubTaskMap() {
-        return subTaskMap;
+    public Map<Integer, SubTask> getSubTasks() {
+        return subTasks;
     }
 
-    public void setSubTaskMap(HashMap<Integer, SubTask> subTaskMap) {
-        this.subTaskMap = subTaskMap;
+    public void setSubTasks(Map<Integer, SubTask> subTasks) {
+        this.subTasks = subTasks;
         status = determineStatus();
     }
 
     public void addSubTask (int id, SubTask subTask) {
-        subTaskMap.put(id,subTask);
+        subTasks.put(id,subTask);
         status = determineStatus();
     }
 
     public void removeSubTask(int id) {
-        subTaskMap.remove(id);
+        subTasks.remove(id);
         status = determineStatus();
     }
 
     private Status determineStatus() {
-        if (!subTaskMap.isEmpty()) {
+        if (!subTasks.isEmpty()) {
             Status status = null;
-            for (SubTask subTask : subTaskMap.values()) {
+            for (SubTask subTask : subTasks.values()) {
                 if (status == null) {
                     status = subTask.status;
                 } else {
@@ -51,6 +52,6 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{id=" + id + ", name=" + name + ", description.length=" +
-                description.length() + ", status=" + status + ", subTaskMap = " + subTaskMap + "}";
+                description.length() + ", status=" + status + ", subTaskMap = " + subTasks + "}";
     }
 }

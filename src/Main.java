@@ -18,9 +18,9 @@ public class Main {
         inMemoryTaskManager.newTask(new Task("таск2", "2")); // добавлен таск id7
 
         // вызов списков задач всех типов
-        System.out.println(inMemoryTaskManager.getEpicTaskMap());
-        System.out.println(inMemoryTaskManager.getSubTaskMap());
-        System.out.println(inMemoryTaskManager.getTaskMap());
+        System.out.println(inMemoryTaskManager.getEpicTasks());
+        System.out.println(inMemoryTaskManager.getSubTasks());
+        System.out.println(inMemoryTaskManager.getTasks());
         System.out.println();
         System.out.println(inMemoryTaskManager.getHistory());
         System.out.println();
@@ -78,11 +78,14 @@ public class Main {
         inMemoryTaskManager.clearTaskMap();
         inMemoryTaskManager.clearEpicTaskMap();
 
-        System.out.println(inMemoryTaskManager.getEpicTaskMap());
-        System.out.println(inMemoryTaskManager.getSubTaskMap());
-        System.out.println(inMemoryTaskManager.getTaskMap());
+        System.out.println(inMemoryTaskManager.getEpicTasks());
+        System.out.println(inMemoryTaskManager.getSubTasks());
+        System.out.println(inMemoryTaskManager.getTasks());
         System.out.println(inMemoryTaskManager.getSubTaskMapByEpic(3));
         System.out.println(inMemoryTaskManager.getEpicTaskById(1));
 
+        System.out.println();
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println();
     }
 }

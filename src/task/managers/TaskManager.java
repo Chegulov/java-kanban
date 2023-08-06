@@ -4,23 +4,22 @@ import task.taskData.Epic;
 import task.taskData.SubTask;
 import task.taskData.Task;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface TaskManager {
 
-    Map<Integer, Task> getTaskMap();
+    Map<Integer, Task> getTasks();
 
-    void setTaskMap(HashMap<Integer, Task> taskMap);
+    void setTasks(Map<Integer, Task> tasks);
 
-    Map<Integer, SubTask> getSubTaskMap();
+    Map<Integer, SubTask> getSubTasks();
 
-    void setSubTaskMap(HashMap<Integer, SubTask> subTaskMap);
+    void setSubTasks(Map<Integer, SubTask> subTasks);
 
-    Map<Integer, Epic> getEpicTaskMap();
+    Map<Integer, Epic> getEpicTasks();
 
-    void setEpicTaskMap(HashMap<Integer, Epic> epicTaskMap);
+    void setEpicTasks(Map<Integer, Epic> epicTasks);
 
     void newEpicTask(Epic epic);
 
@@ -52,7 +51,7 @@ public interface TaskManager {
 
     void removeEpicTask(int id);
 
-    HashMap<Integer, SubTask> getSubTaskMapByEpic(int id);
+    Map<Integer, SubTask> getSubTaskMapByEpic(int id);
 
     List<Task> getHistory();
 }

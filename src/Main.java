@@ -74,9 +74,9 @@ public class Main {
         inMemoryTaskManager.removeSubTask(4);
         inMemoryTaskManager.removeTask(8);
         inMemoryTaskManager.removeEpicTask(1);
-        inMemoryTaskManager.clearSubTaskMap();
-        inMemoryTaskManager.clearTaskMap();
-        inMemoryTaskManager.clearEpicTaskMap();
+        inMemoryTaskManager.clearSubTasks();
+        inMemoryTaskManager.clearTasks();
+        inMemoryTaskManager.clearEpicTasks();
 
         System.out.println(inMemoryTaskManager.getEpicTasks());
         System.out.println(inMemoryTaskManager.getSubTasks());

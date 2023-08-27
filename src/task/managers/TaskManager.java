@@ -27,11 +27,11 @@ public interface TaskManager {
 
     void newTask(Task task);
 
-    void clearTaskMap();
+    void clearTasks();
 
-    void clearEpicTaskMap();
+    void clearEpicTasks();
 
-    void clearSubTaskMap();
+    void clearSubTasks();
 
     Task getTaskById(int id);
 

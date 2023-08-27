@@ -70,12 +70,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearTaskMap() {
+    public void clearTasks() {
         tasks.clear();
     }
 
     @Override
-    public void clearEpicTaskMap() {
+    public void clearEpicTasks() {
         // при удалении эпиков, удалить все связанные сабтаски.
         for (Epic epic : epicTasks.values()) {
             for (Integer key : epic.getSubTasks().keySet()) {
@@ -87,7 +87,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearSubTaskMap() {
+    public void clearSubTasks() {
         // при удалении сабтаски, удалить её из связанного эпика.
         for (SubTask subTask : subTasks.values()) {
             int id = subTask.getParentTaskId();
@@ -153,6 +153,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTask(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -161,6 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
             int parentTaskId = subTasks.get(id).getParentTaskId();
             epicTasks.get(parentTaskId).removeSubTask(id);
             subTasks.remove(id);
+            historyManager.remove(id);
         }
     }
 
@@ -168,8 +170,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicTask(int id) {
         for (int subTaskKey : epicTasks.get(id).getSubTasks().keySet()) {
             subTasks.remove(subTaskKey);
+            historyManager.remove(subTaskKey);
         }
         epicTasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override

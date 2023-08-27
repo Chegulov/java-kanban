@@ -18,7 +18,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
     @Override
     public List<Task> getHistory() {
-        return getTasks();
+        if (head != null) {
+            return getTasks();
+        }
+        return null;
     }
 
     private List<Task> getTasks() {
@@ -65,15 +68,18 @@ public class InMemoryHistoryManager implements HistoryManager {
     private void removeNode(Node node) {
         Node prev = node.prev;
         Node next = node.next;
+        if (next == null && prev == null) {
+            head = null;
+            tail = null;
+            return;
+        }
         if (prev == null) {
             head = next;
-            next.prev = null;
         } else {
             prev.next = next;
         }
         if (next == null) {
             tail = prev;
-            prev.next = null;
         } else {
             next.prev = prev;
         }
@@ -86,12 +92,6 @@ class Node {
     public Task data;
     public Node next;
     public Node prev;
-
-    public Node(Task data) {
-        this.data = data;
-        this.next = null;
-        this.prev = null;
-    }
 
     public Node(Node prev, Task data, Node next) {
         this.data = data;

@@ -1,5 +1,3 @@
-package com.chegulov.tasktracker;
-
 import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.Status;
 import com.chegulov.tasktracker.model.SubTask;

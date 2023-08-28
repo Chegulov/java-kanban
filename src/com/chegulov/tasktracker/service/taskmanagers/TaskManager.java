@@ -1,8 +1,8 @@
-package task.managers;
+package com.chegulov.tasktracker.service.taskmanagers;
 
-import task.taskData.Epic;
-import task.taskData.SubTask;
-import task.taskData.Task;
+import com.chegulov.tasktracker.model.Epic;
+import com.chegulov.tasktracker.model.SubTask;
+import com.chegulov.tasktracker.model.Task;
 
 import java.util.List;
 import java.util.Map;

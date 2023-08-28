@@ -1,6 +1,6 @@
-package task.managers;
+package com.chegulov.tasktracker.service.historymanagers;
 
-import task.taskData.Task;
+import com.chegulov.tasktracker.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    public Node head;
-    public Node tail;
+    private Node head;
+    private Node tail;
     private int size = 0;
     private final Map<Integer,Node> historyHelper;
 
@@ -21,15 +21,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (head != null) {
             return getTasks();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private List<Task> getTasks() {
         List<Task> history = new ArrayList<>(size);
         Node iter = head;
         for (int i = 1; i <= size; i++) {
-            history.add(iter.data);
-            iter = iter.next;
+            history.add(iter.getData());
+            iter = iter.getNext();
         }
         return history;
     }
@@ -52,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (oldTail == null)
             head = newNode;
         else
-            oldTail.next = newNode;
+            oldTail.setNext(newNode);
         size++;
     }
 
@@ -66,8 +66,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void removeNode(Node node) {
-        Node prev = node.prev;
-        Node next = node.next;
+        Node prev = node.getPrev();
+        Node next = node.getNext();
         if (next == null && prev == null) {
             head = null;
             tail = null;
@@ -76,26 +76,13 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (prev == null) {
             head = next;
         } else {
-            prev.next = next;
+            prev.setNext(next);
         }
         if (next == null) {
             tail = prev;
         } else {
-            next.prev = prev;
+            next.setPrev(prev);
         }
         size--;
-    }
-}
-
-class Node {
-
-    public Task data;
-    public Node next;
-    public Node prev;
-
-    public Node(Node prev, Task data, Node next) {
-        this.data = data;
-        this.next = next;
-        this.prev = prev;
     }
 }

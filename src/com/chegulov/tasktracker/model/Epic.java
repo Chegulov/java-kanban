@@ -1,4 +1,4 @@
-package task.taskData;
+package com.chegulov.tasktracker.model;
 
 import java.util.HashMap;
 import java.util.Map;

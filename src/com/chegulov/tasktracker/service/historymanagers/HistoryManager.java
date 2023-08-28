@@ -1,6 +1,6 @@
-package task.managers;
+package com.chegulov.tasktracker.service.historymanagers;
 
-import task.taskData.Task;
+import com.chegulov.tasktracker.model.Task;
 
 import java.util.List;
 

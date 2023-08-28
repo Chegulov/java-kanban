@@ -1,6 +1,10 @@
-import task.managers.Managers;
-import task.managers.TaskManager;
-import task.taskData.*;
+import com.chegulov.tasktracker.model.Epic;
+import com.chegulov.tasktracker.model.Status;
+import com.chegulov.tasktracker.model.SubTask;
+import com.chegulov.tasktracker.model.Task;
+import com.chegulov.tasktracker.service.Managers;
+import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
+
 public class Main {
 
     public static void main(String[] args) {

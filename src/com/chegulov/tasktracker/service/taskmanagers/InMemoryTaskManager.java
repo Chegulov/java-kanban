@@ -1,10 +1,15 @@
-package task.managers;
+package com.chegulov.tasktracker.service.taskmanagers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import task.taskData.*;
+import com.chegulov.tasktracker.model.Epic;
+import com.chegulov.tasktracker.model.SubTask;
+import com.chegulov.tasktracker.model.Task;
+import com.chegulov.tasktracker.service.historymanagers.HistoryManager;
+import com.chegulov.tasktracker.service.Managers;
+
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
     private Map<Integer, Task> tasks;

@@ -1,4 +1,4 @@
-package task.taskData;
+package com.chegulov.tasktracker.model;
 
 public enum Status {
     NEW,

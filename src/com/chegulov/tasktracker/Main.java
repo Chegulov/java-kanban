@@ -5,12 +5,17 @@ import com.chegulov.tasktracker.model.Status;
 import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
 import com.chegulov.tasktracker.service.Managers;
+import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
+
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager inMemoryTaskManager = Managers.getDefault();
+        String filename = "com/chegulov/tasktracker/resources";
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File(filename));
 
         System.out.println("Поехали!");
 

@@ -17,6 +17,7 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
     public String getName() {
         return name;
     }

@@ -11,12 +11,12 @@ import com.chegulov.tasktracker.service.historymanagers.HistoryManager;
 import com.chegulov.tasktracker.service.Managers;
 
 public class InMemoryTaskManager implements TaskManager {
-    private int id = 0;
-    private Map<Integer, Task> tasks;
-    private Map<Integer, SubTask> subTasks;
-    private Map<Integer, Epic> epicTasks;
+    protected int id = 0;
+    protected Map<Integer, Task> tasks;
+    protected Map<Integer, SubTask> subTasks;
+    protected Map<Integer, Epic> epicTasks;
 
-    private final HistoryManager historyManager;
+    protected final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();

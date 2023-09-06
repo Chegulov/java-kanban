@@ -2,8 +2,10 @@ package com.chegulov.tasktracker.service.taskmanagers;
 
 import com.chegulov.tasktracker.model.*;
 import com.chegulov.tasktracker.service.exceptions.ManagerSaveException;
+import com.chegulov.tasktracker.service.historymanagers.HistoryManager;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         this.file = file;
     }
 
-    static FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             reader.readLine();
@@ -31,9 +33,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 }
             }
             String historyLine = reader.readLine();
-            String[] history = historyLine.split(",");
-            for (String idS : history) {
-                int id = Integer.parseInt(idS);
+            List<Integer> history = historyFromString(historyLine);
+            for (int id : history) {
                 fileBackedTasksManager.getTaskById(id); //КОСТЫЛЬ
                 fileBackedTasksManager.getSubTaskById(id);
                 fileBackedTasksManager.getEpicTaskById(id);
@@ -43,9 +44,38 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
         return fileBackedTasksManager;
     }
+
+    public static String historyToString(HistoryManager manager) {
+        List<String> id = new ArrayList<>();
+        for (Task task : manager.getHistory()) {
+            id.add(String.valueOf(task.getId()));
+        }
+        return String.join(",", id);
+    }
+
+    public static List<Integer> historyFromString(String value) {
+        List<Integer> history = new ArrayList<>();
+        String[] split = value.split(",");
+        for (String num : split) {
+            history.add(Integer.parseInt(num));
+        }
+        return history;
+    }
+
     private void save() {
-        try (FileWriter fileWriter = new FileWriter(file,true)){
-            BufferedWriter writer = new BufferedWriter(fileWriter);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
+            writer.write("id,type,name,status,description,epic\n");
+            for (Task task : tasks.values()) {
+                writer.write(task.toString() + "\n");
+            }
+            for (Epic epic : epicTasks.values()) {
+                writer.write(epic.toString() + "\n");
+            }
+            for (SubTask subTask : subTasks.values()) {
+                writer.write(subTask.toString() + "\n");
+            }
+            writer.newLine();
+            writer.write(FileBackedTasksManager.historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException();
         }

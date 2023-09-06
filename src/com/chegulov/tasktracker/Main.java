@@ -81,10 +81,10 @@ public class Main {
         System.out.println();
 
         //удаление
-        taskManager.removeSubTask(5);
-        taskManager.removeSubTask(4);
-        taskManager.removeTask(8);
-        taskManager.removeEpicTask(1);
+//        taskManager.removeSubTask(5);
+//        taskManager.removeSubTask(4);
+//        taskManager.removeTask(8);
+//        taskManager.removeEpicTask(1);
 //        taskManager.clearSubTasks();
 //        taskManager.clearTasks();
 //        taskManager.clearEpicTasks();

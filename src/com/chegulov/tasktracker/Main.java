@@ -9,13 +9,22 @@ import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
 import java.io.File;
-
+import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
         //TaskManager taskManager = Managers.getDefault();
         String filename = "src/com/chegulov/tasktracker/resources/data.csv";
-        TaskManager taskManager = new FileBackedTasksManager(new File(filename));
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Ошибка при создании файла");
+            }
+        }
+        TaskManager taskManager = new FileBackedTasksManager(file);
 
         System.out.println("Поехали!");
 

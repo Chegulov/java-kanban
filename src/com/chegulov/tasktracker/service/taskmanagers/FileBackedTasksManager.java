@@ -7,10 +7,10 @@ import com.chegulov.tasktracker.service.historymanagers.HistoryManager;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    File file;
+    private final File file;
     public FileBackedTasksManager(File file) {
         super();
         this.file = file;
@@ -24,15 +24,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 String line = reader.readLine();
                 if (line.isBlank()) break;
                 Task task = fileBackedTasksManager.fromString(line);
-                if (task instanceof Epic) {
-                    fileBackedTasksManager.epicTasks.put(task.getId(),(Epic) task);
-                } else if (task instanceof SubTask) {
-                    fileBackedTasksManager.subTasks.put(task.getId(),(SubTask) task);
-                    fileBackedTasksManager.epicTasks.get(((SubTask) task).getParentTaskId()).addSubTask(task.getId(), (SubTask) task);
-                } else if (task != null) {
-                    fileBackedTasksManager.tasks.put(task.getId(),task);
+                if (task != null) {
+                    if (task instanceof Epic) {
+                        fileBackedTasksManager.epicTasks.put(task.getId(), (Epic) task);
+                    } else if (task instanceof SubTask) {
+                        fileBackedTasksManager.subTasks.put(task.getId(), (SubTask) task);
+                        fileBackedTasksManager.epicTasks.get(((SubTask) task).getParentTaskId()).addSubTask(task.getId(), (SubTask) task);
+                    } else {
+                        fileBackedTasksManager.tasks.put(task.getId(), task);
+                    }
+                    fileBackedTasksManager.id = Math.max(fileBackedTasksManager.id, task.getId());
                 }
-                fileBackedTasksManager.id = Math.max(fileBackedTasksManager.id, task.getId());
             }
             String historyLine = reader.readLine();
             List<Integer> history = historyFromString(historyLine);
@@ -46,7 +48,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException("loadFromFile failed: " + e.getMessage());
         }
         return fileBackedTasksManager;
     }
@@ -83,7 +85,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             writer.newLine();
             writer.write(FileBackedTasksManager.historyToString(historyManager));
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException("save failed: " + e.getMessage());
         }
     }
 
@@ -105,36 +107,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             default:
                 return null;
         }
-    }
-
-    @Override
-    public Map<Integer, Task> getTasks() {
-        return super.getTasks();
-    }
-
-    @Override
-    public void setTasks(Map<Integer, Task> tasks) {
-        super.setTasks(tasks);
-    }
-
-    @Override
-    public Map<Integer, SubTask> getSubTasks() {
-        return super.getSubTasks();
-    }
-
-    @Override
-    public void setSubTasks(Map<Integer, SubTask> subTasks) {
-        super.setSubTasks(subTasks);
-    }
-
-    @Override
-    public Map<Integer, Epic> getEpicTasks() {
-        return super.getEpicTasks();
-    }
-
-    @Override
-    public void setEpicTasks(Map<Integer, Epic> epicTasks) {
-        super.setEpicTasks(epicTasks);
     }
 
     @Override
@@ -228,15 +200,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public void removeEpicTask(int id) {
         super.removeEpicTask(id);
         save();
-    }
-
-    @Override
-    public Map<Integer, SubTask> getSubTaskMapByEpic(int id) {
-        return super.getSubTaskMapByEpic(id);
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return super.getHistory();
     }
 }

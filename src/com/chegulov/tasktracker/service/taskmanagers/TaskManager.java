@@ -11,21 +11,15 @@ public interface TaskManager {
 
     Map<Integer, Task> getTasks();
 
-    void setTasks(Map<Integer, Task> tasks);
-
     Map<Integer, SubTask> getSubTasks();
-
-    void setSubTasks(Map<Integer, SubTask> subTasks);
 
     Map<Integer, Epic> getEpicTasks();
 
-    void setEpicTasks(Map<Integer, Epic> epicTasks);
+    void addEpicTask(Epic epic);
 
-    void newEpicTask(Epic epic);
+    void addSubTask(SubTask subTask);
 
-    void newSubTask(SubTask subTask);
-
-    void newTask(Task task);
+    void addTask(Task task);
 
     void clearTasks();
 

@@ -56,22 +56,30 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void newEpicTask(Epic epic) {
-        epicTasks.put(++id, epic);
-        epic.setId(id);
+    public void addEpicTask(Epic epic) {
+        if (epic != null) {
+            epicTasks.put(++id, epic);
+            epic.setId(id);
+        } //надо выбросить исключение
     }
 
     @Override
-    public void newSubTask(SubTask subTask) {
-        subTasks.put(++id, subTask);
-        subTask.setId(id);
-        epicTasks.get(subTask.getParentTaskId()).addSubTask(id, subTask);
+    public void addSubTask(SubTask subTask) {
+        if (subTask != null) {
+            if (epicTasks.containsKey(subTask.getParentTaskId())) {
+                subTasks.put(++id, subTask);
+                subTask.setId(id);
+                epicTasks.get(subTask.getParentTaskId()).addSubTask(id, subTask);
+            } //надо выбросить исключение
+        } //надо выбросить исключение
     }
 
     @Override
-    public void newTask(Task task) {
-        tasks.put(++id, task);
-        task.setId(id);
+    public void addTask(Task task) {
+        if (task != null) {
+            tasks.put(++id, task);
+            task.setId(id);
+        } //надо выбросить исключение
     }
 
     @Override

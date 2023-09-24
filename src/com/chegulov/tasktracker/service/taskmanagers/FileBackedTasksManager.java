@@ -29,11 +29,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                         fileBackedTasksManager.epicTasks.put(task.getId(), (Epic) task);
                     } else if (task instanceof SubTask) {
                         fileBackedTasksManager.subTasks.put(task.getId(), (SubTask) task);
-                        fileBackedTasksManager.epicTasks.get(((SubTask) task).getParentTaskId()).addSubTask(task.getId(), (SubTask) task);
                     } else {
                         fileBackedTasksManager.tasks.put(task.getId(), task);
                     }
                     fileBackedTasksManager.id = Math.max(fileBackedTasksManager.id, task.getId());
+                }
+                for (SubTask subTask : fileBackedTasksManager.subTasks.values()) {
+                    fileBackedTasksManager.epicTasks.get(subTask.getParentTaskId()).addSubTask(subTask.getId(), subTask);
                 }
             }
             String historyLine = reader.readLine();
@@ -110,20 +112,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void newEpicTask(Epic epic) {
-        super.newEpicTask(epic);
+    public void addEpicTask(Epic epic) {
+        super.addEpicTask(epic);
         save();
     }
 
     @Override
-    public void newSubTask(SubTask subTask) {
-        super.newSubTask(subTask);
+    public void addSubTask(SubTask subTask) {
+        super.addSubTask(subTask);
         save();
     }
 
     @Override
-    public void newTask(Task task) {
-        super.newTask(task);
+    public void addTask(Task task) {
+        super.addTask(task);
         save();
     }
 

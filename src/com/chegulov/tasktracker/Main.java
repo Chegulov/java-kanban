@@ -4,7 +4,6 @@ import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.Status;
 import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
-import com.chegulov.tasktracker.service.Managers;
 import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
@@ -29,13 +28,13 @@ public class Main {
         System.out.println("Поехали!");
 
         //добавляю новые таски
-        taskManager.newEpicTask(new Epic("эпик1", "111")); // добавлен эпик id1
-        taskManager.newSubTask(new SubTask("саб1", "100", 1)); // добавлен сабтаск id2
-        taskManager.newEpicTask(new Epic("эпик2", "222")); // добавлен эпик id3
-        taskManager.newSubTask(new SubTask("саб2", "200", 3)); // добавлен сабтаск id4
-        taskManager.newSubTask(new SubTask("саб3", "300", 3)); // добавлен сабтаск id5
-        taskManager.newTask(new Task("таск1", "1")); // добавлен таск id6
-        taskManager.newTask(new Task("таск2", "2")); // добавлен таск id7
+        taskManager.addEpicTask(new Epic("эпик1", "111")); // добавлен эпик id1
+        taskManager.addSubTask(new SubTask("саб1", "100", 1)); // добавлен сабтаск id2
+        taskManager.addEpicTask(new Epic("эпик2", "222")); // добавлен эпик id3
+        taskManager.addSubTask(new SubTask("саб2", "200", 3)); // добавлен сабтаск id4
+        taskManager.addSubTask(new SubTask("саб3", "300", 3)); // добавлен сабтаск id5
+        taskManager.addTask(new Task("таск1", "1")); // добавлен таск id6
+        taskManager.addTask(new Task("таск2", "2")); // добавлен таск id7
 
         // вызов списков задач всех типов
         System.out.println(taskManager.getEpicTasks());

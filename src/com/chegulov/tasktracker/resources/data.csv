@@ -1,0 +1,10 @@
+id,type,name,status,description,epic
+6,TASK,таск1 новый,DONE,1'
+7,TASK,таск2,NEW,2
+1,EPIC,эпик1,IN_PROGRESS,111
+3,EPIC,эпик2 новый,DONE,222'
+2,SUBTASK,саб1,NEW,100,1
+4,SUBTASK,саб3 новый,DONE,300',3
+5,SUBTASK,саб2 новый,DONE,200',1
+
+2,7,6,3,4,5,1

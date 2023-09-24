@@ -31,28 +31,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void setTasks(Map<Integer, Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Override
     public Map<Integer, SubTask> getSubTasks() {
         return subTasks;
     }
 
     @Override
-    public void setSubTasks(Map<Integer, SubTask> subTasks) {
-        this.subTasks = subTasks;
-    }
-
-    @Override
     public Map<Integer, Epic> getEpicTasks() {
         return epicTasks;
-    }
-
-    @Override
-    public void setEpicTasks(Map<Integer, Epic> epicTasks) {
-        this.epicTasks = epicTasks;
     }
 
     @Override

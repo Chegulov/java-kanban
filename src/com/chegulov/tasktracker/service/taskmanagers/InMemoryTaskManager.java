@@ -126,31 +126,37 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(int id, Task task) {
-        if (tasks.containsKey(id)) {
-            task.setId(id);
-            tasks.put(id, task);
+        if (task != null) {
+            if (tasks.containsKey(id)) {
+                task.setId(id);
+                tasks.put(id, task);
+            }
         }
     }
 
     @Override
     public void updateSubTask(int id, SubTask subTask) {
-        if (subTasks.containsKey(id)) {
-            subTask.setId(id);
-            int parentTaskId = subTasks.get(id).getParentTaskId();
-            epicTasks.get(parentTaskId).removeSubTask(id);
-            subTasks.put(id, subTask);
-            parentTaskId = subTask.getParentTaskId();
-            epicTasks.get(parentTaskId).addSubTask(id, subTask);
+        if (subTask != null) {
+            if (subTasks.containsKey(id) && epicTasks.containsKey(subTask.getParentTaskId())) {
+                subTask.setId(id);
+                int parentTaskId = subTasks.get(id).getParentTaskId();
+                epicTasks.get(parentTaskId).removeSubTask(id);
+                subTasks.put(id, subTask);
+                parentTaskId = subTask.getParentTaskId();
+                epicTasks.get(parentTaskId).addSubTask(id, subTask);
+            }
         }
     }
 
     @Override
     public void updateEpicTask(int id, Epic epic) {
-        if (epicTasks.containsKey(id)) {
-            Map<Integer, SubTask> oldSubTaskMap = epicTasks.get(id).getSubTasks();
-            epic.setId(id);
-            epic.setSubTasks(oldSubTaskMap);
-            epicTasks.put(id, epic);
+        if (epic != null) {
+            if (epicTasks.containsKey(id)) {
+                Map<Integer, SubTask> oldSubTaskMap = epicTasks.get(id).getSubTasks();
+                epic.setId(id);
+                epic.setSubTasks(oldSubTaskMap);
+                epicTasks.put(id, epic);
+            }
         }
     }
 

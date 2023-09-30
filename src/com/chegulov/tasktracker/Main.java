@@ -9,6 +9,8 @@ import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -114,6 +116,12 @@ public class Main {
         System.out.println(taskManager2.getTasks());
         System.out.println(taskManager2.getSubTaskMapByEpic(3));
         System.out.println(taskManager2.getEpicTaskById(1));
+
+        taskManager.addTask(new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0)));
+        taskManager.addTask(new Task("таск2время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10)));
+        taskManager.addTask(new Task("таск3время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 20)));
+        taskManager.updateTask(8, new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10)));
+        taskManager.updateTask(9, new Task("таск3время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 30)));
 
         System.out.println();
         System.out.println(taskManager2.getHistory());

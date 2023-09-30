@@ -97,7 +97,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return id*11 + name.hashCode() + description.hashCode();
+        return id*11 + name.length()*7 + description.length();
     }
 
     @Override

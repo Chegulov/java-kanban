@@ -1,10 +1,12 @@
-id,type,name,status,description,epic
-6,TASK,таск1 новый,DONE,1'
-7,TASK,таск2,NEW,2
-1,EPIC,эпик1,IN_PROGRESS,111
-3,EPIC,эпик2 новый,DONE,222'
-2,SUBTASK,саб1,NEW,100,1
-4,SUBTASK,саб3 новый,DONE,300',3
-5,SUBTASK,саб2 новый,DONE,200',1
+id,type,name,status,description,duration,startTime,epic
+6,TASK,таск1 новый,DONE,1',0,null
+7,TASK,таск2,NEW,2,0,null
+8,TASK,тасквремя,null,666,20,2000-01-01T00:00
+9,TASK,таск3время,null,666,20,2000-01-01T00:30
+1,EPIC,эпик1,IN_PROGRESS,111,0,null
+3,EPIC,эпик2 новый,DONE,222',0,null
+2,SUBTASK,саб1,NEW,100,0,null,1
+4,SUBTASK,саб3 новый,DONE,300',0,null,3
+5,SUBTASK,саб2 новый,DONE,200',0,null,1
 
 2,7,6,3,4,5,1

@@ -8,12 +8,14 @@ import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.TreeSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
     T taskManager;
     Epic epic;
-    Epic emptyEpic;
     SubTask subTask1;
     SubTask subTask2;
     Task task;
@@ -333,5 +335,46 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.removeTask(3);
         assertEquals(taskManager.getHistory().size(), 2);
         assertEquals(taskManager.getHistory().get(taskManager.getHistory().size()-1), task2);
+    }
+
+    @Test
+    void shouldNotAddTaskIfCrossTime() {
+        task = new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0));
+        taskManager.addTask(task);
+        task2 = new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10));
+        taskManager.addTask(task2);
+        assertNotEquals(task2, taskManager.getTaskById(2));
+    }
+
+    @Test
+    void shouldNotAddSubTaskIfCrossTime() {
+        taskManager.addEpicTask(epic);
+        subTask1 = new SubTask("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0), 1);
+        taskManager.addSubTask(subTask1);
+        subTask2 = new SubTask("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10), 1);
+        taskManager.addSubTask(subTask2);
+        assertNotEquals(subTask2, taskManager.getSubTaskById(3));
+    }
+
+    @Test
+    void shouldGetPrioritizedTasks() {
+        task = new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0));
+        taskManager.addTask(task);
+        task.setId(1);
+        taskManager.addEpicTask(epic);
+        epic.setId(2);
+        subTask1 = new SubTask("сабтасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 21), 2);
+        taskManager.addSubTask(subTask1);
+        subTask1.setId(3);
+        subTask2.setParentTaskId(2);
+        taskManager.addSubTask(subTask2);
+        subTask2.setId(4);
+        TreeSet<Task> testSet = taskManager.getPrioritizedTasks();
+        assertTrue(testSet.contains(task));
+        assertEquals(subTask1.getId(),3);
+        assertTrue(testSet.contains(subTask1));
+        assertFalse(testSet.contains(epic));
+        assertTrue(testSet.contains(subTask2));
+        assertEquals(testSet.last(), subTask2);
     }
 }

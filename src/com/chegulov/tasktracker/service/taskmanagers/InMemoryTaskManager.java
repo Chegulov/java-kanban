@@ -21,22 +21,9 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks = new HashMap<>();
         epicTasks = new HashMap<>();
         historyManager = Managers.getDefaultHistory();
-        prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId));
-    //(o1, o2) -> {
-//            if (o1.equals(o2)) {
-//                return 0;
-//            }
-//            if (o1.getId() == o2.getId()) {
-//                return 0;
-//            }
-//            if (o1.getStartTime() == null) {
-//                return 1;
-//            }
-//            if (o2.getStartTime() == null) {
-//                return -1;
-//            }
-//            return o1.getStartTime().compareTo(o2.getStartTime());
-//        })
+        prioritizedTasks = new TreeSet<>(Comparator.comparing(
+                                            Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())
+                                        ).thenComparing(Task::getId));
     }
 
     @Override
@@ -65,7 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addSubTask(SubTask subTask) {
         if (subTask != null) {
-            if (epicTasks.containsKey(subTask.getParentTaskId())) {
+            if (epicTasks.containsKey(subTask.getParentTaskId()) && !hasCrossTime(subTask)) {
                 subTasks.put(++id, subTask);
                 subTask.setId(id);
                 epicTasks.get(subTask.getParentTaskId()).addSubTask(id, subTask);
@@ -76,7 +63,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
-        if (task != null) {
+        if (task != null && !hasCrossTime(task)) {
             tasks.put(++id, task);
             task.setId(id);
             prioritizedTasks.add(task);
@@ -147,10 +134,14 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(int id, Task task) {
         if (task != null) {
             if (tasks.containsKey(id)) {
-                task.setId(id);
                 prioritizedTasks.remove(tasks.get(id));
-                tasks.put(id, task);
-                prioritizedTasks.add(task);
+                if (!hasCrossTime(task)) {
+                    task.setId(id);
+                    tasks.put(id, task);
+                    prioritizedTasks.add(task);
+                } else {
+                    prioritizedTasks.add(tasks.get(id));
+                }
             }
         }
     }
@@ -159,14 +150,18 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubTask(int id, SubTask subTask) {
         if (subTask != null) {
             if (subTasks.containsKey(id) && epicTasks.containsKey(subTask.getParentTaskId())) {
-                subTask.setId(id);
                 prioritizedTasks.remove(subTasks.get(id));
-                int parentTaskId = subTasks.get(id).getParentTaskId();
-                epicTasks.get(parentTaskId).removeSubTask(id);
-                subTasks.put(id, subTask);
-                parentTaskId = subTask.getParentTaskId();
-                epicTasks.get(parentTaskId).addSubTask(id, subTask);
-                prioritizedTasks.add(subTask);
+                if (!hasCrossTime(subTask)) {
+                    subTask.setId(id);
+                    int parentTaskId = subTasks.get(id).getParentTaskId();
+                    epicTasks.get(parentTaskId).removeSubTask(id);
+                    subTasks.put(id, subTask);
+                    parentTaskId = subTask.getParentTaskId();
+                    epicTasks.get(parentTaskId).addSubTask(id, subTask);
+                    prioritizedTasks.add(subTask);
+                } else {
+                    prioritizedTasks.add(subTasks.get(id));
+                }
             }
         }
     }
@@ -223,7 +218,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Set<Task> getPrioritizedTasks() {
+    public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
+    }
+
+    @Override
+    public boolean hasCrossTime(Task task) {
+        if (task.getStartTime() == null) {
+            return false;
+        }
+        return prioritizedTasks.stream()
+                .filter(task1 -> task1.getStartTime() != null)
+                .anyMatch(task1 -> (
+                        (task.getStartTime().isBefore(task1.getEndTime())
+                        && task.getStartTime().isAfter(task1.getStartTime()))
+                        || (task.getEndTime().isAfter(task1.getStartTime())
+                        && task.getEndTime().isBefore(task1.getEndTime())))
+                );
     }
 }

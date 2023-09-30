@@ -1,8 +1,6 @@
 package com.chegulov.tasktracker.service.taskmanagers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.SubTask;
@@ -15,14 +13,30 @@ public class InMemoryTaskManager implements TaskManager {
     protected Map<Integer, Task> tasks;
     protected Map<Integer, SubTask> subTasks;
     protected Map<Integer, Epic> epicTasks;
-
     protected final HistoryManager historyManager;
+    protected TreeSet<Task> prioritizedTasks;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
         subTasks = new HashMap<>();
         epicTasks = new HashMap<>();
         historyManager = Managers.getDefaultHistory();
+        prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId));
+    //(o1, o2) -> {
+//            if (o1.equals(o2)) {
+//                return 0;
+//            }
+//            if (o1.getId() == o2.getId()) {
+//                return 0;
+//            }
+//            if (o1.getStartTime() == null) {
+//                return 1;
+//            }
+//            if (o2.getStartTime() == null) {
+//                return -1;
+//            }
+//            return o1.getStartTime().compareTo(o2.getStartTime());
+//        })
     }
 
     @Override
@@ -55,6 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
                 subTasks.put(++id, subTask);
                 subTask.setId(id);
                 epicTasks.get(subTask.getParentTaskId()).addSubTask(id, subTask);
+                prioritizedTasks.add(subTask);
             } //надо выбросить исключение
         } //надо выбросить исключение
     }
@@ -64,6 +79,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (task != null) {
             tasks.put(++id, task);
             task.setId(id);
+            prioritizedTasks.add(task);
         } //надо выбросить исключение
     }
 
@@ -71,6 +87,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearTasks() {
         for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
+            prioritizedTasks.remove(task);
         }
         tasks.clear();
     }
@@ -80,6 +97,7 @@ public class InMemoryTaskManager implements TaskManager {
         // при удалении эпиков, удалить все связанные сабтаски.
         for (Epic epic : epicTasks.values()) {
             for (Integer key : epic.getSubTasks().keySet()) {
+                prioritizedTasks.remove(subTasks.get(key));
                 subTasks.remove(key);
                 historyManager.remove(key);
             }
@@ -96,6 +114,7 @@ public class InMemoryTaskManager implements TaskManager {
             int id = subTask.getParentTaskId();
             epicTasks.get(id).getSubTasks().remove(subTask.getId());
             historyManager.remove(subTask.getId());
+            prioritizedTasks.remove(subTask);
         }
         subTasks.clear();
     }
@@ -129,7 +148,9 @@ public class InMemoryTaskManager implements TaskManager {
         if (task != null) {
             if (tasks.containsKey(id)) {
                 task.setId(id);
+                prioritizedTasks.remove(tasks.get(id));
                 tasks.put(id, task);
+                prioritizedTasks.add(task);
             }
         }
     }
@@ -139,11 +160,13 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTask != null) {
             if (subTasks.containsKey(id) && epicTasks.containsKey(subTask.getParentTaskId())) {
                 subTask.setId(id);
+                prioritizedTasks.remove(subTasks.get(id));
                 int parentTaskId = subTasks.get(id).getParentTaskId();
                 epicTasks.get(parentTaskId).removeSubTask(id);
                 subTasks.put(id, subTask);
                 parentTaskId = subTask.getParentTaskId();
                 epicTasks.get(parentTaskId).addSubTask(id, subTask);
+                prioritizedTasks.add(subTask);
             }
         }
     }
@@ -197,5 +220,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
     }
 }

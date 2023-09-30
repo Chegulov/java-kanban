@@ -6,6 +6,7 @@ import com.chegulov.tasktracker.model.Task;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -48,4 +49,6 @@ public interface TaskManager {
     Map<Integer, SubTask> getSubTaskMapByEpic(int id);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTasks();
 }

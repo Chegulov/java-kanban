@@ -118,5 +118,8 @@ public class Main {
         System.out.println();
         System.out.println(taskManager2.getHistory());
         System.out.println();
+        System.out.println(taskManager.getHistory());
+        System.out.println(taskManager.getPrioritizedTasks());
+        System.out.println(taskManager2.getPrioritizedTasks());
     }
 }

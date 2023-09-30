@@ -71,6 +71,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (next == null && prev == null) {
             head = null;
             tail = null;
+            size--;
             return;
         }
         if (prev == null) {

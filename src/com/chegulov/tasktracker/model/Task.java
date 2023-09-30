@@ -1,10 +1,14 @@
 package com.chegulov.tasktracker.model;
 
+import java.time.LocalDateTime;
+
 public class Task {
     protected String name;
     protected String description;
     protected int id;
     protected Status status;
+    protected long duration;
+    protected LocalDateTime startTime;
 
     public Task(String name, String description) {
         this.name = name;
@@ -16,6 +20,21 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description, Status status, long duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, long duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public String getName() {
@@ -50,8 +69,44 @@ public class Task {
         this.status = status;
     }
 
+    public LocalDateTime getEndTime() {
+        return startTime != null ? startTime.plusMinutes(duration) : null;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     @Override
     public String toString() {
-        return id + "," + TaskType.TASK + "," + name + "," + status + "," + description;
+        return id + "," + TaskType.TASK + "," + name + ","
+                + status + "," + description + "," + duration + "," + startTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return id*11 + name.hashCode() + description.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        Task otherTask = (Task) obj;
+        return this.id == otherTask.id && this.name.equals(otherTask.name)
+                && this.description.equals(otherTask.description);
     }
 }

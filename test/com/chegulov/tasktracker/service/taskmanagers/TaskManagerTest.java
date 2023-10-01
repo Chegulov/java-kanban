@@ -1,28 +1,27 @@
-package service.taskmanagers;
+package com.chegulov.tasktracker.service.taskmanagers;
 
 import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.Status;
 import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
-import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-    T taskManager;
-    Epic epic;
-    SubTask subTask1;
-    SubTask subTask2;
-    Task task;
-    Task task2;
-    Task task3;
-    @BeforeEach
-    public void beforeEach() {
+    protected T taskManager;
+    protected Epic epic;
+    protected SubTask subTask1;
+    protected SubTask subTask2;
+    protected Task task;
+    protected Task task2;
+    protected Task task3;
+
+    protected void init() {
         epic = new Epic("epicTest","sb1 sb2");
         subTask1 = new SubTask("Sb1", "test1", 1);
         subTask2 = new SubTask("Sb2", "test2", Status.DONE, 1);
@@ -30,9 +29,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
         task2 = new Task("Task2", "task2");
         task3 = new Task("Task3", "task3");
     }
+
     @Test
     void shouldGetTasks() {
         taskManager.addTask(task);
+
         assertFalse(taskManager.getTasks().isEmpty());
     }
 
@@ -45,6 +46,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldGetSubTasks() {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
+
         assertFalse(taskManager.getSubTasks().isEmpty());
     }
 
@@ -56,6 +58,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldGetEpicTasks() {
         taskManager.addEpicTask(epic);
+
         assertFalse(taskManager.getEpicTasks().isEmpty());
     }
 
@@ -67,6 +70,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldAddAndGetEpicTask() {
         taskManager.addEpicTask(epic);
+
         assertNotNull(taskManager.getEpicTaskById(1));
         assertEquals(taskManager.getEpicTaskById(1), epic);
     }
@@ -75,6 +79,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldAddAndGetSubTask() {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
+
         assertNotNull(taskManager.getSubTaskById(2));
         assertEquals(taskManager.getSubTaskById(2), subTask1);
     }
@@ -82,6 +87,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldNotAddSubTaskIfEpicNotExist() {
         taskManager.addSubTask(subTask1);
+
         assertNull(taskManager.getSubTaskById(1));
     }
 
@@ -90,12 +96,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
         taskManager.addSubTask(subTask2);
+
         assertEquals(taskManager.getEpicTaskById(1).getStatus(), Status.IN_PROGRESS);
     }
 
     @Test
     void shouldAddAndGetTask() {
         taskManager.addTask(task);
+
         assertNotNull(taskManager.getTaskById(1));
         assertEquals(taskManager.getTaskById(1), task);
     }
@@ -103,21 +111,27 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldClearTasks() {
         taskManager.addTask(task);
+
         taskManager.clearTasks();
+
         assertTrue(taskManager.getTasks().isEmpty());
     }
 
     @Test
     void shouldClearEpicTasks() {
         taskManager.addEpicTask(epic);
+
         taskManager.clearEpicTasks();
+
         assertTrue(taskManager.getEpicTasks().isEmpty());
     }
 
     @Test
     void shouldClearSubTasks() {
         taskManager.addSubTask(subTask1);
+
         taskManager.clearTasks();
+
         assertTrue(taskManager.getSubTasks().isEmpty());
     }
 
@@ -129,6 +143,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldNotGetTaskByIdIfWrongId() {
         taskManager.addTask(task);
+
         assertNull(taskManager.getTaskById(2));
     }
 
@@ -140,6 +155,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldNotGetEpicTaskByIdIfWrongId() {
         taskManager.addEpicTask(epic);
+
         assertNull(taskManager.getEpicTaskById(2));
     }
 
@@ -152,6 +168,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldNotGetSubTaskByIdIfWrongId() {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
+
         assertNull(taskManager.getSubTaskById(3));
     }
 
@@ -159,13 +176,16 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldUpdateTask() {
         taskManager.addTask(task);
         task = new Task("task2", "task2do");
+
         taskManager.updateTask(1, task);
+
         assertEquals(taskManager.getTaskById(1), task);
     }
 
     @Test
     void shouldNotUpdateTaskIfEmpty() {
         taskManager.updateTask(1, task);
+
         assertNull(taskManager.getTaskById(1));
     }
 
@@ -173,7 +193,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldNotUpdateTaskIfWrongId() {
         taskManager.addTask(task);
         task = new Task("task2", "task2do");
+
         taskManager.updateTask(2, task);
+
         assertNull(taskManager.getTaskById(2));
     }
 
@@ -181,14 +203,18 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldUpdateSubTask() {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
+
         taskManager.updateSubTask(2, subTask2);
+
         assertEquals(taskManager.getSubTaskById(2), subTask2);
     }
 
     @Test
     void shouldNotUpdateSubTaskIfEmpty() {
         taskManager.addEpicTask(epic);
+
         taskManager.updateSubTask(2, subTask2);
+
         assertNull(taskManager.getSubTaskById(2));
     }
 
@@ -196,7 +222,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldNotUpdateSubTaskIfWrongId() {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
+
         taskManager.updateSubTask(3, subTask2);
+
         assertNull(taskManager.getSubTaskById(3));
     }
 
@@ -205,7 +233,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
         subTask2.setParentTaskId(4);
+
         taskManager.updateSubTask(2, subTask2);
+
         assertNotEquals(taskManager.getSubTaskById(2).getName(), subTask2.getName());
     }
 
@@ -214,6 +244,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
         taskManager.updateSubTask(2, subTask2);
+
         assertEquals(taskManager.getEpicTaskById(1).getStatus(), Status.DONE);
     }
 
@@ -221,13 +252,16 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldUpdateEpicTask() {
         taskManager.addEpicTask(epic);
         epic = new Epic("epic2", "epic2do");
+
         taskManager.updateEpicTask(1, epic);
+
         assertEquals(taskManager.getEpicTaskById(1), epic);
     }
 
     @Test
     void shouldNotUpdateEpicTaskIfEmpty() {
         taskManager.updateEpicTask(1, epic);
+
         assertNull(taskManager.getEpicTaskById(1));
     }
 
@@ -235,7 +269,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldNotUpdateEpicTaskIfWrongId() {
         taskManager.addEpicTask(epic);
         epic = new Epic("epic2", "epic2do");
+
         taskManager.updateEpicTask(2, epic);
+
         assertNull(taskManager.getEpicTaskById(2));
     }
 
@@ -243,7 +279,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldRemoveTask() {
         taskManager.addTask(task);
         assertFalse(taskManager.getTasks().isEmpty());
+
         taskManager.removeTask(1);
+
         assertTrue(taskManager.getTasks().isEmpty());
     }
 
@@ -252,7 +290,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addEpicTask(epic);
         taskManager.addSubTask(subTask1);
         assertFalse(taskManager.getSubTasks().isEmpty());
+
         taskManager.removeSubTask(2);
+
         assertTrue(taskManager.getSubTasks().isEmpty());
     }
 
@@ -260,16 +300,41 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void removeEpicTask() {
         taskManager.addEpicTask(epic);
         assertFalse(taskManager.getEpicTasks().isEmpty());
+
         taskManager.removeEpicTask(1);
+
         assertTrue(taskManager.getTasks().isEmpty());
     }
 
     @Test
-    void getSubTaskMapByEpic() {
+    void shouldGetSubTaskMapByEpic() {
+        taskManager.addEpicTask(epic);
+        taskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask2);
+
+        assertFalse(taskManager.getSubTaskMapByEpic(1).isEmpty());
+        assertEquals(taskManager.getSubTaskMapByEpic(1), taskManager.getSubTasks());
     }
 
     @Test
-    void getHistory() {
+    void shouldGetHistory() {
+        taskManager.addEpicTask(epic);
+        taskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask2);
+        taskManager.getEpicTaskById(1);
+        taskManager.getSubTaskById(2);
+
+        assertFalse(taskManager.getHistory().isEmpty());
+        assertEquals(taskManager.getHistory(), List.of(epic, subTask1));
+    }
+
+    @Test
+    void shouldGetEmptyHistory() {
+        taskManager.addEpicTask(epic);
+        taskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask2);
+
+        assertTrue(taskManager.getHistory().isEmpty());
     }
 
     @Test
@@ -277,6 +342,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addTask(task);
         taskManager.getTaskById(1);
         taskManager.getTaskById(1);
+
         assertFalse(taskManager.getHistory().isEmpty());
         assertEquals(taskManager.getHistory().size(), 1);
     }
@@ -290,7 +356,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTaskById(2);
         taskManager.getTaskById(3);
         assertEquals(taskManager.getHistory().size(), 3);
+
         taskManager.removeTask(1);
+
         assertEquals(taskManager.getHistory().size(), 2);
         assertEquals(taskManager.getHistory().get(0), task2);
     }
@@ -304,7 +372,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTaskById(2);
         taskManager.getSubTaskById(3);
         assertEquals(taskManager.getHistory().size(), 3);
+
         taskManager.removeEpicTask(1);
+
         assertEquals(taskManager.getHistory().size(), 1);
         assertEquals(taskManager.getHistory().get(0), task);
     }
@@ -318,7 +388,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTaskById(2);
         taskManager.getSubTaskById(3);
         assertEquals(taskManager.getHistory().size(), 3);
+
         taskManager.removeTask(2);
+
         assertEquals(taskManager.getHistory().size(), 2);
         assertEquals(taskManager.getHistory().get(0), epic);
     }
@@ -332,7 +404,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTaskById(2);
         taskManager.getTaskById(3);
         assertEquals(taskManager.getHistory().size(), 3);
+
         taskManager.removeTask(3);
+
         assertEquals(taskManager.getHistory().size(), 2);
         assertEquals(taskManager.getHistory().get(taskManager.getHistory().size()-1), task2);
     }
@@ -342,7 +416,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         task = new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0));
         taskManager.addTask(task);
         task2 = new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10));
+
         taskManager.addTask(task2);
+
         assertNotEquals(task2, taskManager.getTaskById(2));
     }
 
@@ -352,7 +428,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         subTask1 = new SubTask("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0), 1);
         taskManager.addSubTask(subTask1);
         subTask2 = new SubTask("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10), 1);
+
         taskManager.addSubTask(subTask2);
+
         assertNotEquals(subTask2, taskManager.getSubTaskById(3));
     }
 
@@ -369,7 +447,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
         subTask2.setParentTaskId(2);
         taskManager.addSubTask(subTask2);
         subTask2.setId(4);
+
         TreeSet<Task> testSet = taskManager.getPrioritizedTasks();
+
         assertTrue(testSet.contains(task));
         assertEquals(subTask1.getId(),3);
         assertTrue(testSet.contains(subTask1));

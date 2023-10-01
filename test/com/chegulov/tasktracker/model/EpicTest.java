@@ -1,8 +1,5 @@
-package model;
+package com.chegulov.tasktracker.model;
 
-import com.chegulov.tasktracker.model.Epic;
-import com.chegulov.tasktracker.model.Status;
-import com.chegulov.tasktracker.model.SubTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

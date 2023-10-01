@@ -55,7 +55,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("loadFromFile failed: " + e.getMessage());
+            throw new ManagerSaveException("loadFromFile failed:" + e.getMessage());
         }
         return fileBackedTasksManager;
     }

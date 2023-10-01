@@ -1,4 +1,6 @@
 id,type,name,status,description,duration,startTime,epic
 1,TASK,Task1,NEW,task,0,null
 2,EPIC,epicTest,NEW,sb1 sb2,0,null
+3,SUBTASK,Sb1,NEW,test1,0,null,2
 
+1,2,3

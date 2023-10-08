@@ -9,4 +9,4 @@ id,type,name,status,description,duration,startTime,epic
 4,SUBTASK,саб3 новый,DONE,300',0,null,3
 5,SUBTASK,саб2 новый,DONE,200',0,null,1
 
-2,7,6,3,4,5,1
+2,7,6,3,4,5,1,8

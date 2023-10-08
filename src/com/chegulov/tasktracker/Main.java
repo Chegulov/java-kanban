@@ -4,6 +4,8 @@ import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.Status;
 import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
+import com.chegulov.tasktracker.server.HttpTaskServer;
+import com.chegulov.tasktracker.server.KVServer;
 import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //TaskManager taskManager = Managers.getDefault();
         String filename = "src/com/chegulov/tasktracker/resources/data.csv";
 
@@ -129,5 +131,9 @@ public class Main {
         System.out.println(taskManager.getHistory());
         System.out.println(taskManager.getPrioritizedTasks());
         System.out.println(taskManager2.getPrioritizedTasks());
+
+        HttpTaskServer server = new HttpTaskServer(taskManager);
+        server.start();
+        new KVServer().start();
     }
 }

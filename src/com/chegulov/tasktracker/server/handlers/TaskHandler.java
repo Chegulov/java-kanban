@@ -1,10 +1,12 @@
 package com.chegulov.tasktracker.server.handlers;
 
+import com.chegulov.tasktracker.adapters.LocalDateTimeAdapter;
 import com.chegulov.tasktracker.model.Epic;
 import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -14,7 +16,9 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
+//TODO добавить исключения при ошибках добавления, обновления задач и обработать здесь
 public class TaskHandler implements HttpHandler {
     private final TaskManager taskManager;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -31,7 +35,10 @@ public class TaskHandler implements HttpHandler {
         String query = uri.getQuery();
         int statusCode;
         String response;
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
         int id = -1;
         if (query != null) {
             try {
@@ -115,9 +122,14 @@ public class TaskHandler implements HttpHandler {
                 if (query == null) {
                     try {
                         Task task = gson.fromJson(taskJson, Task.class);
-                        taskManager.addTask(task);
-                        statusCode = 201;
-                        response = "Задача добавлена с id= " + task.getId();
+                        boolean b = taskManager.addTask(task);
+                        if (b) {
+                            statusCode = 201;
+                            response = "Задача добавлена с id= " + task.getId();
+                        } else {
+                            statusCode = 400;
+                            response = "Задача не добавлена, некорректный запрос";
+                        }
                     } catch (JsonSyntaxException e) {
                         statusCode = 400;
                         response = "некорректный формат JSON";
@@ -126,9 +138,15 @@ public class TaskHandler implements HttpHandler {
                     try {
                         Task task = gson.fromJson(taskJson, Task.class);
                         if (taskManager.getTaskById(id) != null) {
-                            taskManager.updateTask(id, task);
-                            statusCode = 201;
-                            response = "Задача обновлена с id= " + task.getId();
+                            boolean b = taskManager.addTask(task);
+                            if (b) {
+                                taskManager.updateTask(id, task);
+                                statusCode = 201;
+                                response = "Задача обновлена с id= " + task.getId();
+                            } else {
+                                statusCode = 400;
+                                response = "Задача не обновлена, некорректный запрос";
+                            }
                         } else {
                             statusCode = 404;
                             response = "Задача с таким id не найдена";
@@ -144,9 +162,14 @@ public class TaskHandler implements HttpHandler {
                 if (query == null) {
                     try {
                         Epic epicPost = gson.fromJson(epicJson, Epic.class);
-                        taskManager.addEpicTask(epicPost);
-                        statusCode = 201;
-                        response = "Эпик добавлен с id= " + epicPost.getId();
+                        boolean b = taskManager.addEpicTask(epicPost);
+                        if (b) {
+                            statusCode = 201;
+                            response = "Эпик добавлен с id= " + epicPost.getId();
+                        } else {
+                            statusCode = 400;
+                            response = "Эпик не добавлен, некорректный запрос";
+                        }
                     } catch (JsonSyntaxException e) {
                         statusCode = 400;
                         response = "некорректный формат JSON";
@@ -155,9 +178,15 @@ public class TaskHandler implements HttpHandler {
                     try {
                         Epic epicPost = gson.fromJson(epicJson, Epic.class);
                         if (taskManager.getEpicTaskById(id) != null) {
-                            taskManager.updateEpicTask(id, epicPost);
-                            statusCode = 201;
-                            response = "Эпик обновлен с id= " + epicPost.getId();
+                            boolean b = taskManager.addEpicTask(epicPost);
+                            if (b) {
+                                taskManager.updateEpicTask(id, epicPost);
+                                statusCode = 201;
+                                response = "Эпик обновлен с id= " + epicPost.getId();
+                            } else {
+                                statusCode = 400;
+                                response = "Эпик не обновлен, некорректный запрос";
+                            }
                         } else {
                             statusCode = 404;
                             response = "Эпик с таким id не найден";
@@ -173,9 +202,14 @@ public class TaskHandler implements HttpHandler {
                 if (query == null) {
                     try {
                         SubTask subTaskPost = gson.fromJson(subTaskJson, SubTask.class);
-                        taskManager.addSubTask(subTaskPost);
-                        statusCode = 201;
-                        response = "Подзадача добавлена с id= " + subTaskPost.getId();
+                        boolean b = taskManager.addSubTask(subTaskPost);
+                        if (b) {
+                            statusCode = 201;
+                            response = "Подзадача добавлена с id= " + subTaskPost.getId();
+                        } else {
+                            statusCode = 400;
+                            response = "Подзадача не добавлена, некорректный запрос";
+                        }
                     } catch (JsonSyntaxException e) {
                         statusCode = 400;
                         response = "некорректный формат JSON";
@@ -184,9 +218,14 @@ public class TaskHandler implements HttpHandler {
                     try {
                         SubTask subTaskPost = gson.fromJson(subTaskJson, SubTask.class);
                         if (taskManager.getSubTaskById(id) != null) {
-                            taskManager.updateSubTask(id, subTaskPost);
-                            statusCode = 201;
-                            response = "Подзадача обновлена с id= " + subTaskPost.getId();
+                            boolean b = taskManager.updateSubTask(id, subTaskPost);
+                            if (b) {
+                                statusCode = 201;
+                                response = "Подзадача добавлена с id= " + subTaskPost.getId();
+                            } else {
+                                statusCode = 400;
+                                response = "Подзадача не добавлена, некорректный запрос";
+                            }
                         } else {
                             statusCode = 404;
                             response = "Подзадача с таким id не найдена";
@@ -265,7 +304,7 @@ public class TaskHandler implements HttpHandler {
         String result = method;
         if (pathParts.length > 3 && pathParts[3].equals("epic")) {
             result = method + "_EPIC_SUB";
-        } else if (pathParts.length > 2){
+        } else if (pathParts.length > 2) {
             result = method + "_" + pathParts[2];
         }
         try {

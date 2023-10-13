@@ -35,6 +35,7 @@ public class Task {
         this.description = description;
         this.duration = duration;
         this.startTime = startTime;
+        this.status = Status.NEW;
     }
 
     public String getName() {

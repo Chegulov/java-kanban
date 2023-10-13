@@ -12,6 +12,11 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
+    public FileBackedTasksManager(String fileName) {
+        super();
+        file = new File(fileName);
+    }
+
     public FileBackedTasksManager(File file) {
         super();
         this.file = file;
@@ -60,7 +65,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return fileBackedTasksManager;
     }
 
-    private static String historyToString(HistoryManager manager) {
+    protected static String historyToString(HistoryManager manager) {
         List<String> ids = new ArrayList<>();
         for (Task task : manager.getHistory()) {
             ids.add(String.valueOf(task.getId()));
@@ -68,16 +73,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return String.join(",", ids);
     }
 
-    private static List<Integer> historyFromString(String value) {
+    protected static List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
         String[] split = value.split(",");
         for (String num : split) {
-            history.add(Integer.parseInt(num));
+            if (!num.isBlank()) {
+                history.add(Integer.parseInt(num));
+            }
         }
         return history;
     }
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
             writer.write("id,type,name,status,description,duration,startTime,epic\n");
             for (Task task : tasks.values()) {
@@ -104,9 +111,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         } else {
             startTime = LocalDateTime.parse(params[6]);
         }
+        Status status;
+        if (params[3].equals("null")) {
+            status = Status.NEW;
+        } else {
+            status = Status.valueOf(params[3]);
+        }
         switch (TaskType.valueOf(params[1])) {
             case TASK:
-                Task task = new Task(params[2], params[4], Status.valueOf(params[3]), Long.parseLong(params[5]), startTime);
+                Task task = new Task(params[2], params[4], status, Long.parseLong(params[5]), startTime);
                 task.setId(Integer.parseInt(params[0]));
                 return task;
             case EPIC:
@@ -115,7 +128,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 return epic;
             case SUBTASK:
                 SubTask subTask;
-                subTask = new SubTask(params[2], params[4], Status.valueOf(params[3]), Long.parseLong(params[5]), startTime, Integer.parseInt(params[7]));
+                subTask = new SubTask(params[2], params[4], status, Long.parseLong(params[5]), startTime, Integer.parseInt(params[7]));
                 subTask.setId(Integer.parseInt(params[0]));
                 return subTask;
             default:
@@ -124,21 +137,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void addEpicTask(Epic epic) {
-        super.addEpicTask(epic);
+    public boolean addEpicTask(Epic epic) {
+        boolean b = super.addEpicTask(epic);
         save();
+        return b;
     }
 
     @Override
-    public void addSubTask(SubTask subTask) {
-        super.addSubTask(subTask);
+    public boolean addSubTask(SubTask subTask) {
+        boolean b = super.addSubTask(subTask);
         save();
+        return b;
     }
 
     @Override
-    public void addTask(Task task) {
-        super.addTask(task);
+    public boolean addTask(Task task) {
+        boolean b = super.addTask(task);
         save();
+        return b;
     }
 
     @Override
@@ -181,21 +197,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(int id, Task task) {
-        super.updateTask(id, task);
+    public boolean updateTask(int id, Task task) {
+        boolean b = super.updateTask(id, task);
         save();
+        return b;
     }
 
     @Override
-    public void updateSubTask(int id, SubTask subTask) {
-        super.updateSubTask(id, subTask);
+    public boolean updateSubTask(int id, SubTask subTask) {
+        boolean b = super.updateSubTask(id, subTask);
         save();
+        return b;
     }
 
     @Override
-    public void updateEpicTask(int id, Epic epic) {
-        super.updateEpicTask(id, epic);
+    public boolean updateEpicTask(int id, Epic epic) {
+        boolean b = super.updateEpicTask(id, epic);
         save();
+        return b;
     }
 
     @Override

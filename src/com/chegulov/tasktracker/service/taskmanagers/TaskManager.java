@@ -16,11 +16,11 @@ public interface TaskManager {
 
     Map<Integer, Epic> getEpicTasks();
 
-    void addEpicTask(Epic epic);
+    boolean addEpicTask(Epic epic);
 
-    void addSubTask(SubTask subTask);
+    boolean addSubTask(SubTask subTask);
 
-    void addTask(Task task);
+    boolean addTask(Task task);
 
     void clearTasks();
 
@@ -34,11 +34,11 @@ public interface TaskManager {
 
     SubTask getSubTaskById(int id);
 
-    void updateTask(int id, Task task);
+    boolean updateTask(int id, Task task);
 
-    void updateSubTask(int id, SubTask subTask);
+    boolean updateSubTask(int id, SubTask subTask);
 
-    void updateEpicTask(int id, Epic epic);
+    boolean updateEpicTask(int id, Epic epic);
 
     void removeTask(int id);
 

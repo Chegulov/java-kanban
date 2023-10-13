@@ -42,32 +42,39 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addEpicTask(Epic epic) {
+    public boolean addEpicTask(Epic epic) {
         if (epic != null) {
             epicTasks.put(++id, epic);
             epic.setId(id);
-        } //надо выбросить исключение
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void addSubTask(SubTask subTask) {
+    public boolean addSubTask(SubTask subTask) {
         if (subTask != null) {
             if (epicTasks.containsKey(subTask.getParentTaskId()) && !hasCrossTime(subTask)) {
                 subTasks.put(++id, subTask);
                 subTask.setId(id);
                 epicTasks.get(subTask.getParentTaskId()).addSubTask(id, subTask);
                 prioritizedTasks.add(subTask);
-            } //надо выбросить исключение
-        } //надо выбросить исключение
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     @Override
-    public void addTask(Task task) {
+    public boolean addTask(Task task) {
         if (task != null && !hasCrossTime(task)) {
             tasks.put(++id, task);
             task.setId(id);
             prioritizedTasks.add(task);
-        } //надо выбросить исключение
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -131,7 +138,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(int id, Task task) {
+    public boolean updateTask(int id, Task task) {
         if (task != null) {
             if (tasks.containsKey(id)) {
                 prioritizedTasks.remove(tasks.get(id));
@@ -139,15 +146,19 @@ public class InMemoryTaskManager implements TaskManager {
                     task.setId(id);
                     tasks.put(id, task);
                     prioritizedTasks.add(task);
+                    return true;
                 } else {
                     prioritizedTasks.add(tasks.get(id));
+                    return false;
                 }
             }
+            return false;
         }
+        return false;
     }
 
     @Override
-    public void updateSubTask(int id, SubTask subTask) {
+    public boolean updateSubTask(int id, SubTask subTask) {
         if (subTask != null) {
             if (subTasks.containsKey(id) && epicTasks.containsKey(subTask.getParentTaskId())) {
                 prioritizedTasks.remove(subTasks.get(id));
@@ -159,23 +170,30 @@ public class InMemoryTaskManager implements TaskManager {
                     parentTaskId = subTask.getParentTaskId();
                     epicTasks.get(parentTaskId).addSubTask(id, subTask);
                     prioritizedTasks.add(subTask);
+                    return true;
                 } else {
                     prioritizedTasks.add(subTasks.get(id));
+                    return false;
                 }
             }
+            return false;
         }
+        return false;
     }
 
     @Override
-    public void updateEpicTask(int id, Epic epic) {
+    public boolean updateEpicTask(int id, Epic epic) {
         if (epic != null) {
             if (epicTasks.containsKey(id)) {
                 Map<Integer, SubTask> oldSubTaskMap = epicTasks.get(id).getSubTasks();
                 epic.setId(id);
                 epic.setSubTasks(oldSubTaskMap);
                 epicTasks.put(id, epic);
+                return true;
             }
+            return false;
         }
+        return false;
     }
 
     @Override
@@ -235,7 +253,9 @@ public class InMemoryTaskManager implements TaskManager {
                         || (task.getEndTime().isAfter(task1.getStartTime())
                         && task.getEndTime().isBefore(task1.getEndTime()))
                         || (task.getStartTime().isBefore(task1.getStartTime())
-                        && task.getEndTime().isAfter(task1.getEndTime())))
+                        && task.getEndTime().isAfter(task1.getEndTime()))
+                        || (task.getStartTime().equals(task1.getStartTime()))
+                        || (task.getEndTime().equals(task1.getEndTime())))
                 );
     }
 }

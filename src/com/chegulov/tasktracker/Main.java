@@ -6,19 +6,22 @@ import com.chegulov.tasktracker.model.SubTask;
 import com.chegulov.tasktracker.model.Task;
 import com.chegulov.tasktracker.server.HttpTaskServer;
 import com.chegulov.tasktracker.server.KVServer;
+import com.chegulov.tasktracker.service.Managers;
 import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
+import com.chegulov.tasktracker.service.taskmanagers.HttpTaskManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //TaskManager taskManager = Managers.getDefault();
         String filename = "src/com/chegulov/tasktracker/resources/data.csv";
-
+        //TaskManager taskManager = FileBackedTasksManager.loadFromFile(new File(filename));
         File file = new File(filename);
         if (!file.exists()) {
             try {
@@ -27,7 +30,10 @@ public class Main {
                 System.out.println("Ошибка при создании файла");
             }
         }
-        TaskManager taskManager = new FileBackedTasksManager(file);
+        new KVServer().start();
+        TaskManager taskManager = Managers.getDefault();
+        HttpTaskServer server = new HttpTaskServer(taskManager);
+        server.start();
 
         System.out.println("Поехали!");
 
@@ -112,28 +118,27 @@ public class Main {
         System.out.println();
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        TaskManager taskManager2 = FileBackedTasksManager.loadFromFile(new File(filename));
-        System.out.println(taskManager2.getEpicTasks());
-        System.out.println(taskManager2.getSubTasks());
-        System.out.println(taskManager2.getTasks());
-        System.out.println(taskManager2.getSubTaskMapByEpic(3));
-        System.out.println(taskManager2.getEpicTaskById(1));
-
+//        TaskManager taskManager2 = FileBackedTasksManager.loadFromFile(new File(filename));
+//        System.out.println(taskManager2.getEpicTasks());
+//        System.out.println(taskManager2.getSubTasks());
+//        System.out.println(taskManager2.getTasks());
+//        System.out.println(taskManager2.getSubTaskMapByEpic(3));
+//        System.out.println(taskManager2.getEpicTaskById(1));
+//
         taskManager.addTask(new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 0)));
         taskManager.addTask(new Task("таск2время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10)));
         taskManager.addTask(new Task("таск3время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 20)));
         taskManager.updateTask(8, new Task("тасквремя", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 10)));
         taskManager.updateTask(9, new Task("таск3время", "666", 20, LocalDateTime.of(2000, 1, 1, 0, 30)));
+//
+//        System.out.println();
+//        System.out.println(taskManager2.getHistory());
+//        System.out.println();
+//        System.out.println(taskManager.getHistory());
+//        System.out.println(taskManager.getPrioritizedTasks());
+//        System.out.println(taskManager2.getPrioritizedTasks());
 
-        System.out.println();
-        System.out.println(taskManager2.getHistory());
-        System.out.println();
-        System.out.println(taskManager.getHistory());
-        System.out.println(taskManager.getPrioritizedTasks());
-        System.out.println(taskManager2.getPrioritizedTasks());
 
-        HttpTaskServer server = new HttpTaskServer(taskManager);
-        server.start();
-        new KVServer().start();
+
     }
 }

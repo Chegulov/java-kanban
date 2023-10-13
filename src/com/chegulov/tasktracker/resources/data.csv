@@ -1,12 +1,58 @@
 id,type,name,status,description,duration,startTime,epic
+32,TASK,таск1,NEW,1,0,null
+33,TASK,таск2,NEW,2,0,null
 6,TASK,таск1 новый,DONE,1',0,null
 7,TASK,таск2,NEW,2,0,null
-8,TASK,тасквремя,null,666,20,2000-01-01T00:00
-9,TASK,таск3время,null,666,20,2000-01-01T00:30
+39,TASK,таск1,NEW,1,0,null
+8,TASK,тасквремя,NEW,666,20,2000-01-01T00:10
+40,TASK,таск2,NEW,2,0,null
+9,TASK,таск3время,NEW,666,20,2000-01-01T00:30
+46,TASK,таск1,NEW,1,0,null
+15,TASK,таск1,NEW,1,0,null
+47,TASK,таск2,NEW,2,0,null
+16,TASK,таск2,NEW,2,0,null
+53,TASK,таск1,NEW,1,0,null
+22,TASK,таск1,NEW,1,0,null
+54,TASK,таск2,NEW,2,0,null
+23,TASK,таск2,NEW,2,0,null
+55,TASK,тасквремя,NEW,666,20,2010-01-01T00:10
+24,TASK,тасквремя,NEW,666,0,null
+25,TASK,тасквремя,NEW,666,0,null
+26,TASK,тасквремя,NEW,666,20,null
 1,EPIC,эпик1,IN_PROGRESS,111,0,null
-3,EPIC,эпик2 новый,DONE,222',0,null
+34,EPIC,эпик1,NEW,111,0,null
+3,EPIC,эпик2 новый,IN_PROGRESS,222',0,null
+36,EPIC,эпик2,NEW,222,0,null
+41,EPIC,эпик1,NEW,111,0,null
+10,EPIC,эпик1,NEW,111,0,null
+43,EPIC,эпик2,NEW,222,0,null
+12,EPIC,эпик2,NEW,222,0,null
+48,EPIC,эпик1,NEW,111,0,null
+17,EPIC,эпик1,NEW,111,0,null
+50,EPIC,эпик2,NEW,222,0,null
+19,EPIC,эпик2,NEW,222,0,null
+27,EPIC,эпик1,NEW,111,0,null
+29,EPIC,эпик2,NEW,222,0,null
 2,SUBTASK,саб1,NEW,100,0,null,1
+35,SUBTASK,саб1,NEW,100,0,null,1
 4,SUBTASK,саб3 новый,DONE,300',0,null,3
 5,SUBTASK,саб2 новый,DONE,200',0,null,1
+37,SUBTASK,саб2,NEW,200,0,null,3
+38,SUBTASK,саб3,NEW,300,0,null,3
+42,SUBTASK,саб1,NEW,100,0,null,1
+11,SUBTASK,саб1,NEW,100,0,null,1
+44,SUBTASK,саб2,NEW,200,0,null,3
+13,SUBTASK,саб2,NEW,200,0,null,3
+45,SUBTASK,саб3,NEW,300,0,null,3
+14,SUBTASK,саб3,NEW,300,0,null,3
+49,SUBTASK,саб1,NEW,100,0,null,1
+18,SUBTASK,саб1,NEW,100,0,null,1
+51,SUBTASK,саб2,NEW,200,0,null,3
+20,SUBTASK,саб2,NEW,200,0,null,3
+52,SUBTASK,саб3,NEW,300,0,null,3
+21,SUBTASK,саб3,NEW,300,0,null,3
+28,SUBTASK,саб1,NEW,100,0,null,1
+30,SUBTASK,саб2,NEW,200,0,null,3
+31,SUBTASK,саб3,NEW,300,0,null,3
 
 2,7,6,3,4,5,1

@@ -17,6 +17,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 //TODO добавить исключения при ошибках добавления, обновления задач и обработать здесь
 public class TaskHandler implements HttpHandler {
@@ -111,7 +112,7 @@ public class TaskHandler implements HttpHandler {
                 Epic epic = taskManager.getEpicTaskById(id);
                 if (epic != null) {
                     statusCode = 200;
-                    response = gson.toJson(taskManager.getSubTaskMapByEpic(id));
+                    response = gson.toJson(taskManager.getSubTasksByEpic(id));
                 } else {
                     statusCode = 404;
                     response = "эпик с данным id не найден";
@@ -162,6 +163,9 @@ public class TaskHandler implements HttpHandler {
                 if (query == null) {
                     try {
                         Epic epicPost = gson.fromJson(epicJson, Epic.class);
+                        if (epicPost.getSubTasks() == null) {
+                            epicPost.setSubTasks(new ArrayList<>());
+                        }
                         boolean b = taskManager.addEpicTask(epicPost);
                         if (b) {
                             statusCode = 201;
@@ -221,7 +225,7 @@ public class TaskHandler implements HttpHandler {
                             boolean b = taskManager.updateSubTask(id, subTaskPost);
                             if (b) {
                                 statusCode = 201;
-                                response = "Подзадача добавлена с id= " + subTaskPost.getId();
+                                response = "Подзадача обновлена с id= " + subTaskPost.getId();
                             } else {
                                 statusCode = 400;
                                 response = "Подзадача не добавлена, некорректный запрос";

@@ -43,7 +43,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     fileBackedTasksManager.id = Math.max(fileBackedTasksManager.id, task.getId());
                 }
                 for (SubTask subTask : fileBackedTasksManager.subTasks.values()) {
-                    fileBackedTasksManager.epicTasks.get(subTask.getParentTaskId()).addSubTask(subTask.getId(), subTask);
+                    fileBackedTasksManager.epicTasks.get(subTask.getParentTaskId()).addSubTask(subTask.getId());
                 }
             }
             if (reader.ready()) {

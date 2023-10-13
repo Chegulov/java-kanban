@@ -7,14 +7,10 @@ import com.chegulov.tasktracker.model.Task;
 import com.chegulov.tasktracker.server.HttpTaskServer;
 import com.chegulov.tasktracker.server.KVServer;
 import com.chegulov.tasktracker.service.Managers;
-import com.chegulov.tasktracker.service.taskmanagers.FileBackedTasksManager;
-import com.chegulov.tasktracker.service.taskmanagers.HttpTaskManager;
 import com.chegulov.tasktracker.service.taskmanagers.TaskManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
 public class Main {
@@ -58,7 +54,7 @@ public class Main {
         System.out.println(taskManager.getEpicTaskById(1));
         System.out.println(taskManager.getSubTaskById(2));
         System.out.println(taskManager.getTaskById(7));
-        System.out.println(taskManager.getSubTaskMapByEpic(1));
+        System.out.println(taskManager.getSubTasksByEpic(1));
         System.out.println();
         System.out.println(taskManager.getHistory());
         System.out.println();
@@ -66,7 +62,7 @@ public class Main {
         System.out.println(taskManager.getEpicTaskById(3));
         System.out.println(taskManager.getSubTaskById(4));
         System.out.println(taskManager.getSubTaskById(5));
-        System.out.println(taskManager.getSubTaskMapByEpic(3));
+        System.out.println(taskManager.getSubTasksByEpic(3));
         System.out.println();
 
         //обновил задачи
@@ -78,14 +74,14 @@ public class Main {
         System.out.println(taskManager.getEpicTaskById(1));
         System.out.println(taskManager.getSubTaskById(5));
         System.out.println(taskManager.getTaskById(6));
-        System.out.println(taskManager.getSubTaskMapByEpic(1));
+        System.out.println(taskManager.getSubTasksByEpic(1));
         System.out.println();
         System.out.println(taskManager.getTaskById(6).getStatus());
         System.out.println(taskManager.getSubTaskById(5).getStatus());
         System.out.println(taskManager.getEpicTaskById(1).getStatus());
         System.out.println("<<<<<<<<<<<<<");
         System.out.println(taskManager.getEpicTaskById(3).getStatus());
-        System.out.println(taskManager.getSubTaskMapByEpic(3));
+        System.out.println(taskManager.getSubTasksByEpic(3));
         System.out.println(">>>>>>>>>>>>>");
         System.out.println(taskManager.getHistory());
         System.out.println();
@@ -93,7 +89,7 @@ public class Main {
         System.out.println(taskManager.getEpicTaskById(3));
         System.out.println(taskManager.getSubTaskById(4));
         System.out.println(taskManager.getSubTaskById(5));
-        System.out.println(taskManager.getSubTaskMapByEpic(3));
+        System.out.println(taskManager.getSubTasksByEpic(3));
         System.out.println();
         System.out.println(taskManager.getHistory());
         System.out.println();
@@ -110,7 +106,7 @@ public class Main {
         System.out.println(taskManager.getEpicTasks());
         System.out.println(taskManager.getSubTasks());
         System.out.println(taskManager.getTasks());
-        System.out.println(taskManager.getSubTaskMapByEpic(3));
+        System.out.println(taskManager.getSubTasksByEpic(3));
         System.out.println(taskManager.getEpicTaskById(1));
 
         System.out.println();

@@ -50,7 +50,6 @@ public class KVTaskClient {
             if (response.statusCode() != 200) {
                 throw new ServerSaveLoadException("Некорректный ответ сервера: " + response.statusCode());
             }
-            System.out.println(response.statusCode());
         } catch (IOException | InterruptedException e) {
             throw new ServerSaveLoadException("Запрос на сохранение удался");
         }
@@ -68,7 +67,6 @@ public class KVTaskClient {
             if (response.statusCode() == 404) {
                 return null;
             }
-
             if (response.statusCode() != 200) {
                 throw new ServerSaveLoadException("Некорректный ответ сервера: " + response.statusCode() + " загрузка не удалась!");
             }

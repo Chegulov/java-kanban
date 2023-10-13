@@ -12,13 +12,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
-    private final String url;
     private final KVTaskClient kvTaskClient;
     private final Gson gson;
 
     public HttpTaskManager(String url) {
         super(url);
-        this.url = url;
         gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -33,8 +31,6 @@ public class HttpTaskManager extends FileBackedTasksManager {
         kvTaskClient.put("task", saveTasks);
         String saveEpics = gson.toJson(epicTasks.values());
         kvTaskClient.put("epic", saveEpics);
-        System.out.println(epicTasks.values());
-        System.out.println(saveEpics);
         String saveSubTasks = gson.toJson(subTasks.values());
         kvTaskClient.put("subtask", saveSubTasks);
         String saveHistory = gson.toJson(historyToString(historyManager));
@@ -85,11 +81,20 @@ public class HttpTaskManager extends FileBackedTasksManager {
         String loadedHistory = kvTaskClient.load("history");
         if (loadedHistory != null && !loadedHistory.isBlank()) {
             loadedHistory = loadedHistory.substring(1,loadedHistory.length()-1);
-            historyFromString(loadedHistory);
+            List<Integer> history = historyFromString(loadedHistory);
+            for (int id : history) {
+                if (tasks.containsKey(id)) {
+                    historyManager.add(tasks.get(id));
+                } else if (subTasks.containsKey(id)) {
+                    historyManager.add(subTasks.get(id));
+                } else if (epicTasks.containsKey(id)) {
+                    historyManager.add(epicTasks.get(id));
+                }
+            }
         }
 
         for (SubTask subTask : subTasks.values()) {
-            epicTasks.get(subTask.getParentTaskId()).addSubTask(subTask.getId(), subTask);
+            epicTasks.get(subTask.getParentTaskId()).addSubTask(subTask.getId());
         }
     }
 }

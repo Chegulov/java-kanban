@@ -25,23 +25,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpTaskServerTest {
 
-    HttpTaskServer httpTaskServer;
+    private HttpTaskServer httpTaskServer;
     private TaskManager taskManager;
     private KVServer kvServer;
     private static final String url = "http://localhost:8078/";
     private HttpClient client;
     private URI uri;
-    Gson gson = new GsonBuilder()
+    private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
-    Epic epic;
-    Epic epic2;
-    SubTask subTask1;
-    SubTask subTask2;
-    Task task;
-    Task task2;
-    Task task3;
+    private Epic epic;
+    private Epic epic2;
+    private SubTask subTask1;
+    private SubTask subTask2;
+    private Task task;
+    private Task task2;
+    private Task task3;
 
     private void init() {
         epic = new Epic("epicTest", "sb1 sb2");

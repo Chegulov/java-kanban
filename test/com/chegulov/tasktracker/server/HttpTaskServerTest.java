@@ -204,7 +204,7 @@ public class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(json, response.body().toString());
+        assertEquals(json, response.body());
     }
 
     @Test
@@ -245,7 +245,7 @@ public class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(json, response.body().toString());
+        assertEquals(json, response.body());
     }
 
     @Test
@@ -293,7 +293,7 @@ public class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(json, response.body().toString());
+        assertEquals(json, response.body());
     }
 
     @Test
@@ -495,7 +495,7 @@ public class HttpTaskServerTest {
         testList.add(subTask2);
         json = gson.toJson(testList);
 
-        assertEquals(json, response.body().toString());
+        assertEquals(json, response.body());
     }
 
     @Test

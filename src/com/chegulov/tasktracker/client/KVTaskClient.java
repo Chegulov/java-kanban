@@ -65,14 +65,14 @@ public class KVTaskClient {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 404) {
-                return null;
+                return "";
             }
             if (response.statusCode() != 200) {
                 throw new ServerSaveLoadException("Некорректный ответ сервера: " + response.statusCode() + " загрузка не удалась!");
             }
             return response.body();
         } catch (IOException e) {
-            return null;
+            return "";
         } catch (InterruptedException e) {
             throw new ServerSaveLoadException("Запрос на загрузку не удался");
         }

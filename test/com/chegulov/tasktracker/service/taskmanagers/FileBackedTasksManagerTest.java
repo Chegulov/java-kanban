@@ -41,7 +41,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 }
                 );
 
-        assertNotNull( exception.getMessage());
+        assertNotNull(exception.getMessage());
         assertEquals(exception.getMessage(), "loadFromFile failed: (Системе не удается найти указанный путь)");
     }
 

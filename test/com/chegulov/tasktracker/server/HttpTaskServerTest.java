@@ -219,7 +219,18 @@ public class HttpTaskServerTest {
         uri = URI.create("http://localhost:8080/tasks/task/?id=1");
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
         assertEquals(task, gson.fromJson(response.body(), Task.class));
+    }
+
+    @Test
+    void shouldStatCode404WhenTaskNotPresent() throws IOException, InterruptedException {
+        uri = URI.create("http://localhost:8080/tasks/task/?id=1");
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(404, response.statusCode());
+        assertEquals("задача с данным id не найдена", response.body());
     }
 
     @Test
@@ -262,6 +273,16 @@ public class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(epic, gson.fromJson(response.body(), Epic.class));
+    }
+
+    @Test
+    void shouldStatCode404WhenEpicNotPresent() throws IOException, InterruptedException {
+        uri = URI.create("http://localhost:8080/tasks/epic/?id=1");
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(404, response.statusCode());
+        assertEquals("эпик с данным id не найден", response.body());
     }
 
     @Test
@@ -316,6 +337,16 @@ public class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response =  client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(subTask1, gson.fromJson(response.body(), SubTask.class));
+    }
+
+    @Test
+    void shouldStatCode404WhenSubTaskNotPresent() throws IOException, InterruptedException {
+        uri = URI.create("http://localhost:8080/tasks/subTask/?id=1");
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(404, response.statusCode());
+        assertEquals("подзадача с данным id не найдена", response.body());
     }
 
     @Test
@@ -581,4 +612,28 @@ public class HttpTaskServerTest {
 
         assertEquals(json, response.body());
     }
+
+    @Test
+    void shouldStatCode400IfWrongId() throws IOException, InterruptedException {
+        uri = URI.create("http://localhost:8080/tasks/task/?id=asd");
+        client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(400, response.statusCode());
+        assertEquals("Неверный формат id", response.body());
+    }
+
+    @Test
+    void shouldStatCode400IfNotId() throws IOException, InterruptedException {
+        uri = URI.create("http://localhost:8080/tasks/task/?sd");
+        client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(400, response.statusCode());
+        assertEquals("В запросе отсутствует параметр id", response.body());
+    }
+
+
 }
